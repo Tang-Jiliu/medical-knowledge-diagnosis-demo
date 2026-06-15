@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>306 医学知识点诊断闭环 Demo</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="诊断工作台">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">306 考研医学 · 交互诊断闭环</p>
+            <h1>静息电位知识点定位</h1>
+          </div>
+          <button class="icon-button" id="restartBtn" type="button" aria-label="重新开始" title="重新开始">
+            <span aria-hidden="true">↻</span>
+          </button>
+        </header>
+
+        <div class="status-strip" aria-label="当前诊断状态">
+          <div class="status-item">
+            <span>阶段</span>
+            <strong id="stageLabel">定位题</strong>
+          </div>
+          <div class="status-item">
+            <span>掌握度</span>
+            <strong id="masteryLabel">未测</strong>
+          </div>
+          <div class="status-item">
+            <span>错因</span>
+            <strong id="errorLabel">待观察</strong>
+          </div>
+        </div>
+
+        <section class="question-panel" aria-live="polite">
+          <div class="question-meta">
+            <span id="questionType">五选一定位题</span>
+            <span id="questionPoint">静息电位的产生机制</span>
+          </div>
+          <h2 id="questionTitle">题目加载中</h2>
+          <p class="question-stem" id="questionStem"></p>
+          <div class="options" id="optionsList"></div>
+          <div class="feedback" id="feedbackBox" hidden></div>
+          <div class="actions">
+            <button class="primary-button" id="submitBtn" type="button" disabled>提交答案</button>
+            <button class="secondary-button" id="nextBtn" type="button" hidden>继续</button>
+          </div>
+        </section>
+      </section>
+
+      <aside class="inspector" aria-label="诊断结果">
+        <section class="inspector-section">
+          <h2>流程进度</h2>
+          <ol class="flow-list" id="flowList"></ol>
+        </section>
+
+        <section class="inspector-section">
+          <h2>知识卡</h2>
+          <div class="knowledge-card" id="knowledgeCard">
+            <strong>静息电位：K+ 外流为主</strong>
+            <p>动作电位快速去极化：Na+ 内流为主。复极化：K+ 外流为主。</p>
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <h2>学生画像</h2>
+          <div class="tag-grid" id="tagGrid">
+            <span>未测</span>
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <h2>复盘</h2>
+          <div class="review-log" id="reviewLog">
+            <p>学生作答后，这里会记录每一步的判断依据。</p>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
