@@ -10,16 +10,16 @@ const demo = {
     q1: {
       stage: "定位题",
       type: "五选一定位题",
-      point: "静息电位的产生机制",
-      source: "真题参考：2016 年 306 西医综合第 2 题考查 Na+/K+ 分布；本题为同考点改编",
-      title: "关于静息电位形成机制，下列哪项叙述最准确？",
-      stem: "本题用于定位学生是否能把静息电位的主导离子、平衡电位关系和钠泵作用区分清楚。",
+      point: "神经细胞静息电位的形成和维持机制",
+      source: "真题参考：2016 年 306 西医综合第 2 题考查 Na+/K+ 分布；本题为同考点综合改编",
+      title: "关于神经细胞静息电位形成和维持机制，下列哪项叙述最准确？",
+      stem: "本题综合定位：离子浓度差、膜对 K+/Na+ 的相对通透性、K+ 平衡电位、少量 Na+ 内流和 Na+-K+ 泵的维持作用。",
       options: [
-        ["A", "静息电位主要由 Na+ 内流形成，因此接近 Na+ 平衡电位"],
-        ["B", "静息电位主要由 K+ 外流形成，因此接近但不等于 K+ 平衡电位"],
-        ["C", "静息电位完全等于 K+ 平衡电位，因为静息时细胞膜只允许 K+ 通过"],
-        ["D", "细胞外 K+ 浓度升高时，K+ 外流动力增大，静息电位绝对值增大"],
-        ["E", "钠泵活动只维持离子浓度差，不直接影响静息电位大小"]
+        ["A", "静息电位主要由 Na+ 内流形成，因为细胞外 Na+ 浓度高，Na+ 顺浓度梯度进入细胞，使膜内带负电"],
+        ["B", "静息电位的形成依赖细胞内外 Na+、K+ 浓度差；静息时膜对 K+ 通透性明显高于 Na+，K+ 外流使膜内相对带负电，少量 Na+ 内流使静息电位接近但不等于 K+ 平衡电位"],
+        ["C", "静息电位完全由 Na+-K+ 泵直接形成，因为钠泵每次将 3 个 Na+ 泵出、2 个 K+ 泵入，使膜内持续失去正电荷"],
+        ["D", "只要存在细胞内高 K+、细胞外高 Na+ 的浓度差，即使细胞膜对 Na+ 和 K+ 通透性相同，也能形成接近 K+ 平衡电位的静息电位"],
+        ["E", "Na+-K+ 泵只负责动作电位后恢复离子分布，静息状态下不参与静息电位的形成和维持"]
       ],
       answer: "B",
       correctNext: "q2",
@@ -29,69 +29,69 @@ const demo = {
         D: "q1WrongD",
         E: "q1WrongE"
       },
-      correctFeedback: "答对。先标记为疑似掌握，继续做一道真题风格变式题，排除蒙对。",
-      wrongFeedback: "答错。先不直接讲全套解析，系统会根据你选错的选项追问一个更小的问题。",
-      wrongTag: "静息电位机制混淆"
+      correctFeedback: "答对。B 同时抓住了三个核心：浓度差提供动力，静息时 K+ 通透性最高，Na+-K+ 泵维持离子浓度差；少量 Na+ 内流使静息电位接近但不完全等于 K+ 平衡电位。",
+      wrongFeedback: "答错。系统会先针对你选错的选项追问一个更小的问题，判断你卡在主导离子、钠泵作用，还是通透性条件。",
+      wrongTag: "静息电位形成和维持机制混淆"
     },
     q1WrongA: {
       stage: "错选项追问",
       type: "二选一追问 1/2",
       point: "针对错选 A：Na+ 内流误判",
       source: "由错选项 A 自动生成",
-      title: "你选择了 A。静息电位主要应该看哪种离子的跨膜流动？",
-      stem: "A 的问题在于把静息电位和动作电位快速去极化混在一起。",
+      title: "你选择了 A。静息状态下，形成膜内相对负电的主要跨膜流动是：",
+      stem: "A 的问题有两个：Na+ 内流会使膜内正电增加，不会使膜内带负电；静息电位的主导离子也不是 Na+，而是 K+。",
       options: [["A", "K+ 外流"], ["B", "Na+ 内流"]],
       answer: "A",
       correctNext: "q1HintIon",
       wrongNext: "finalWeak",
-      correctFeedback: "对。静息电位主要看 K+ 外流，下一步确认你能不能区分动作电位。",
-      wrongFeedback: "仍错。已经能判断你对静息电位主导离子掌握不足，先进入讲解包更合适。",
+      correctFeedback: "对。K+ 外流使膜内相对缺少正电荷，所以膜内相对变负。",
+      wrongFeedback: "仍错。说明你把静息电位的主导离子误认为 Na+，该点需要先看基础笔记或视频讲解。",
       wrongTag: "把静息电位误认为 Na+ 内流"
     },
     q1WrongC: {
       stage: "错选项追问",
       type: "二选一追问 1/2",
-      point: "针对错选 C：完全等于 K+ 平衡电位",
+      point: "针对错选 C：钠泵直接形成误判",
       source: "由错选项 C 自动生成",
-      title: "你选择了 C。静息时细胞膜是否只允许 K+ 通过？",
-      stem: "C 的问题在于忽略了静息时膜对 Na+ 仍有少量通透性。",
-      options: [["A", "不是，Na+ 仍有少量通透性"], ["B", "是，只允许 K+ 通过"]],
+      title: "你选择了 C。静息电位主要是由钠泵直接泵电形成，还是由离子扩散和平衡电位决定？",
+      stem: "C 夸大了 Na+-K+ 泵的直接生电效应。钠泵重要，但主要作用是建立和维持 Na+、K+ 浓度差。",
+      options: [["A", "主要由 K+ 扩散及膜通透性决定"], ["B", "完全由钠泵直接形成"]],
       answer: "A",
-      correctNext: "q1HintIon",
+      correctNext: "q1HintPump",
       wrongNext: "finalWeak",
-      correctFeedback: "对。静息电位接近 K+ 平衡电位，但不完全等于它。",
-      wrongFeedback: "仍错。说明你对“接近但不等于 K+ 平衡电位”的原因掌握不足。",
-      wrongTag: "静息电位与 K+ 平衡电位关系不清"
+      correctFeedback: "对。钠泵不是静息电位的唯一直接来源，它主要维持浓度差，并有一定生电效应。",
+      wrongFeedback: "仍错。说明你把钠泵的维持作用误解成了静息电位的全部直接来源。",
+      wrongTag: "钠泵直接形成静息电位误判"
     },
     q1WrongD: {
       stage: "错选项追问",
       type: "二选一追问 1/2",
-      point: "针对错选 D：外液 K+ 影响方向",
+      point: "针对错选 D：忽略相对通透性",
       source: "由错选项 D 自动生成",
-      title: "你选择了 D。细胞外 K+ 浓度升高后，细胞内外 K+ 浓度差会怎样？",
-      stem: "D 的问题在于把外液 K+ 升高理解成 K+ 外流动力增强。",
-      options: [["A", "变小"], ["B", "变大"]],
+      title: "你选择了 D。静息电位接近 K+ 平衡电位，关键条件除了浓度差，还需要：",
+      stem: "D 的问题在于只强调浓度差，忽略了静息时膜对 K+ 的通透性明显高于 Na+。",
+      options: [["A", "膜对 K+ 通透性明显高于 Na+"], ["B", "膜对 Na+ 和 K+ 通透性相同"]],
       answer: "A",
-      correctNext: "q1HintK",
+      correctNext: "q1HintPermeability",
       wrongNext: "finalWeak",
-      correctFeedback: "对。浓度差变小后，K+ 外流动力会减弱。",
-      wrongFeedback: "仍错。已经能判断你对外液 K+ 变化和扩散动力的关系掌握不足。",
-      wrongTag: "外液 K+ 升高影响方向错误"
+      correctFeedback: "对。只有 K+ 通透性占优势，膜电位才会主要被 K+ 平衡电位牵引。",
+      wrongFeedback: "仍错。说明你对“浓度差必须结合选择性通透性”这一层掌握不足。",
+      wrongTag: "忽略膜对 K+ 的高通透性"
     },
     q1WrongE: {
       stage: "错选项追问",
       type: "二选一追问 1/2",
-      point: "针对错选 E：钠泵生电效应",
+      point: "针对错选 E：钠泵不参与误判",
       source: "由错选项 E 自动生成",
-      title: "你选择了 E。钠泵活动增强时，膜电位更可能出现哪种变化？",
-      stem: "E 的问题在于忽略了钠泵除维持离子浓度差外，还有一定生电效应。",
-      options: [["A", "一定程度超级化"], ["B", "立即产生超射"]],
+      title: "你选择了 E。Na+-K+ 泵在静息状态下是否参与静息电位的维持？",
+      stem: "E 的问题在于把钠泵只看成动作电位后的恢复工具，忽略了它在静息状态下持续维持 Na+、K+ 浓度差。",
+      options: [["A", "参与，持续维持离子浓度差"], ["B", "不参与，只在动作电位后工作"]],
       answer: "A",
-      correctNext: "q1HintIon",
+      correctNext: "q1HintPump",
       wrongNext: "finalWeak",
-      correctFeedback: "对。钠泵活动增强可使膜发生一定程度超级化。",
-      wrongFeedback: "仍错。说明你对钠泵影响静息电位的方式掌握不足。",
-      wrongTag: "钠泵生电效应不清"
+      correctFeedback: "对。钠泵持续工作，维持内高 K+、外高 Na+ 的浓度差。",
+      wrongFeedback: "仍错。说明你对钠泵在静息状态下的维持作用掌握不足。",
+      wrongTag: "钠泵静息维持作用不清"
     },
     q1HintIon: {
       stage: "最小提示与再追问",
@@ -99,29 +99,44 @@ const demo = {
       point: "静息电位与动作电位区分",
       source: "错后最小提示",
       title: "动作电位快速去极化的主要原因是：",
-      stem: "提示：静息电位看 K+ 外流；动作电位快速去极化看 Na+ 内流。",
+      stem: "提示：静息电位主要看 K+ 外流；动作电位快速去极化主要看 Na+ 内流。",
       options: [["A", "Na+ 快速内流"], ["B", "K+ 快速外流"]],
       answer: "A",
       correctNext: "q2",
       wrongNext: "finalWeak",
-      correctFeedback: "答对。错因已初步纠正，但仍需做变式验证。",
-      wrongFeedback: "仍错。两步追问后仍不能区分 Na+/K+ 作用，判定为掌握不足。",
+      correctFeedback: "答对。说明经提示后能区分静息电位和动作电位，继续做变式验证。",
+      wrongFeedback: "仍错。两步追问后仍不能区分 Na+/K+ 作用，判定为基础薄弱。",
       wrongTag: "静息电位与动作电位离子机制混淆"
     },
-    q1HintK: {
+    q1HintPump: {
       stage: "最小提示与再追问",
       type: "二选一追问 2/2",
-      point: "外液 K+ 对静息电位的影响",
+      point: "Na+-K+ 泵作用回扣",
       source: "错后最小提示",
-      title: "细胞外 K+ 升高，K+ 外流动力减弱，因此静息电位会：",
-      stem: "提示：外液 K+ 升高 -> 内外 K+ 浓度差变小 -> K+ 外流动力减弱 -> 膜内没那么负。",
-      options: [["A", "绝对值减小，发生去极化"], ["B", "绝对值增大，发生超级化"]],
+      title: "Na+-K+ 泵对静息电位最核心的作用是：",
+      stem: "提示：钠泵持续把 3 个 Na+ 泵出、2 个 K+ 泵入，既维持离子浓度差，也有一定生电效应，但静息电位主要仍由 K+ 扩散决定。",
+      options: [["A", "维持 Na+、K+ 浓度差"], ["B", "完全直接产生静息电位"]],
       answer: "A",
       correctNext: "q2",
       wrongNext: "finalWeak",
-      correctFeedback: "答对。错因已初步纠正，但仍需做变式验证。",
-      wrongFeedback: "仍错。两步追问后仍不能判断外液 K+ 影响方向，判定为掌握不足。",
-      wrongTag: "外液 K+ 影响方向掌握不足"
+      correctFeedback: "答对。说明钠泵的维持作用已初步纠正，继续做变式验证。",
+      wrongFeedback: "仍错。两步追问后仍不能定位钠泵作用，判定为基础薄弱。",
+      wrongTag: "Na+-K+ 泵作用定位错误"
+    },
+    q1HintPermeability: {
+      stage: "最小提示与再追问",
+      type: "二选一追问 2/2",
+      point: "浓度差与通透性回扣",
+      source: "错后最小提示",
+      title: "如果静息时膜对 Na+ 和 K+ 通透性相同，静息电位还会接近 K+ 平衡电位吗？",
+      stem: "提示：膜电位更接近哪种离子的平衡电位，取决于膜对哪种离子的通透性更高。",
+      options: [["A", "不会"], ["B", "会"]],
+      answer: "A",
+      correctNext: "q2",
+      wrongNext: "finalWeak",
+      correctFeedback: "答对。说明你已经抓到“浓度差 + 选择性通透性”这组关键条件。",
+      wrongFeedback: "仍错。两步追问后仍忽略相对通透性，判定为基础薄弱。",
+      wrongTag: "相对通透性决定膜电位方向未掌握"
     },
     q2: {
       stage: "变式验证",
@@ -221,7 +236,7 @@ const demo = {
       correctNext: "finalUnstable",
       wrongNext: "finalWeak",
       correctFeedback: "答对。说明经提示后可纠正，标记为掌握不稳。",
-      wrongFeedback: "仍错。两步追问后仍无法回扣机制，判定为掌握不足。",
+      wrongFeedback: "仍错。两步追问后仍无法回扣机制，判定为基础薄弱。",
       wrongTag: "动作电位幅度机制掌握不足"
     },
     finalPass: {
@@ -415,41 +430,46 @@ function makeFinalAdvice(mastery) {
   return `
     <p><strong>系统动作：</strong>推送基础笔记或视频讲解，暂不推高难综合题。</p>
     <div class="remedial-pack">
-      <h3>基础笔记：静息电位先抓 K+</h3>
-      <p>静息电位的核心是：静息状态下细胞膜对 K+ 通透性最高，K+ 顺浓度差外流，使膜内相对变负。因此静息电位接近 K+ 平衡电位，但因 Na+ 仍有少量通透性，所以不完全相等。</p>
+      <h3>基础笔记：静息电位形成 = 浓度差 + 选择性通透性 + 钠泵维持</h3>
+      <p>静息电位不是单纯由 Na+ 内流或钠泵直接形成。钠泵长期维持细胞内高 K+、细胞外高 Na+ 的浓度差；静息时膜对 K+ 通透性明显高于 Na+，K+ 顺浓度差外流，使膜内相对变负。由于静息时仍有少量 Na+ 内流，静息电位接近但不完全等于 K+ 平衡电位。</p>
       <table class="mini-table">
         <thead>
           <tr>
-            <th>场景</th>
-            <th>主导离子</th>
-            <th>结果</th>
+            <th>环节</th>
+            <th>关键点</th>
+            <th>易错点</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>静息电位</td>
-            <td>K+ 外流</td>
-            <td>膜内相对变负</td>
+            <td>离子基础</td>
+            <td>内高 K+，外高 Na+</td>
+            <td>只记浓度差，忘记膜通透性</td>
           </tr>
           <tr>
-            <td>动作电位快速去极化</td>
-            <td>Na+ 内流</td>
-            <td>膜内迅速变正</td>
+            <td>主要机制</td>
+            <td>K+ 外流，膜内相对变负</td>
+            <td>误认为 Na+ 内流形成内负</td>
           </tr>
           <tr>
-            <td>复极化</td>
-            <td>K+ 外流</td>
-            <td>膜电位回落</td>
+            <td>钠泵作用</td>
+            <td>维持浓度差，并有一定生电效应</td>
+            <td>误认为完全由钠泵直接形成，或认为静息时不参与</td>
+          </tr>
+          <tr>
+            <td>平衡电位</td>
+            <td>接近但不等于 K+ 平衡电位</td>
+            <td>忽略少量 Na+ 通透性</td>
           </tr>
         </tbody>
       </table>
       <div class="memory-card">
         <strong>口诀</strong>
-        <span>静息看钾外流，去极看钠内流；外钾升高，静息绝对值变小。</span>
+        <span>钠泵建差，钾漏成负；钠漏掺一脚，接近不等钾。</span>
       </div>
       <div class="media-placeholder">
-        <span>视频讲解占位</span>
-        <p>这里可接入 2-3 分钟微课：静息电位、动作电位与外液 K+ 变化。</p>
+        <span>图片/视频讲解占位</span>
+        <p>这里可接入一张“Na+-K+ 泵 + K+ 漏通道”示意图，或 2-3 分钟微课：静息电位为什么接近但不等于 K+ 平衡电位。</p>
       </div>
     </div>
   `;
