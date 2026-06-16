@@ -214,6 +214,22 @@ h1 {
   font-weight: 700;
 }
 
+.video-placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 20px;
+  border: 1px dashed var(--accent);
+  background: #eef8f5;
+  text-align: center;
+}
+
+.video-placeholder strong {
+  display: block;
+  color: var(--accent-dark);
+  font-size: 18px;
+}
+
 .wave {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -227,6 +243,59 @@ h1 {
   color: var(--accent-dark);
   font-weight: 700;
   text-align: center;
+}
+
+.ap-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr) 24px minmax(0, 1fr) 24px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+}
+
+.ap-step {
+  display: grid;
+  gap: 5px;
+  min-height: 96px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.ap-step span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ap-step strong {
+  color: var(--accent-dark);
+}
+
+.ap-step small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.ap-step.up {
+  background: #eef8f5;
+  border-color: #b7ddd6;
+}
+
+.ap-step.down {
+  background: #fff7ed;
+  border-color: #f0d8bc;
+}
+
+.ap-step.after {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.ap-arrow {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 900;
 }
 
 .wrong-note,
@@ -250,6 +319,35 @@ h1 {
   resize: vertical;
   font: inherit;
   line-height: 1.6;
+}
+
+.option-mini-list {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  padding-left: 22px;
+}
+
+.option-mini-list li {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.option-mini-list li.selected {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.option-mini-list li.correct {
+  color: var(--ok);
+  font-weight: 800;
+}
+
+.guided-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .question-head {
@@ -413,6 +511,30 @@ h1 {
 .memory-card {
   display: grid;
   gap: 6px;
+}
+
+.memory-card > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.recite-button {
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid #f0d8bc;
+  background: #fff7ed;
+  color: #7c2d12;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.memory-card.masked span {
+  color: transparent;
+  background: repeating-linear-gradient(135deg, #f0d8bc 0 8px, #fff7ed 8px 16px);
+  border-radius: 2px;
+  user-select: none;
 }
 
 .memory-card strong,
@@ -616,5 +738,15 @@ h1 {
 
   .option-button {
     grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .section-grid,
+  .wave,
+  .ap-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .ap-arrow {
+    min-height: 18px;
   }
 }
