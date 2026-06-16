@@ -61,10 +61,46 @@
         </section>
 
         <section class="inspector-section">
+          <h2>流程图</h2>
+          <div class="flowchart" aria-label="诊断闭环流程图">
+            <div class="flow-node">1 定位题</div>
+            <div class="flow-arrow">答对 ↓</div>
+            <div class="flow-node">2 中等变式验证</div>
+            <div class="flow-arrow">答对 ↓</div>
+            <div class="flow-node hard">3 双变量提升验证</div>
+            <div class="flow-split">
+              <div>
+                <span>全对</span>
+                <strong>当场通过</strong>
+              </div>
+              <div>
+                <span>第 3 题错</span>
+                <strong>复杂迁移回退</strong>
+              </div>
+              <div>
+                <span>任一题错</span>
+                <strong>错选项追问</strong>
+              </div>
+            </div>
+            <div class="flow-arrow">追问最多 2 步 ↓</div>
+            <div class="flow-split">
+              <div>
+                <span>提示后答对</span>
+                <strong>掌握不稳</strong>
+              </div>
+              <div>
+                <span>仍答错</span>
+                <strong>推送笔记/视频</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="inspector-section">
           <h2>知识卡</h2>
           <div class="knowledge-card" id="knowledgeCard">
-            <strong>静息电位：K+ 外流为主</strong>
-            <p>动作电位快速去极化：Na+ 内流为主。复极化：K+ 外流为主。</p>
+            <strong>静息电位：浓度差 + 选择性通透性 + 钠泵维持</strong>
+            <p>静息电位主要看 K+ 外流；动作电位快速去极化主要看 Na+ 内流。</p>
           </div>
         </section>
 
