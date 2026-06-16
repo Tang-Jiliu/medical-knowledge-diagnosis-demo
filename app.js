@@ -328,7 +328,8 @@ const legacyRestingQuestions = [
   }
 ];
 
-sections[0].questions.push(...legacyRestingQuestions);
+sections[0].questions.push(legacyRestingQuestions[1]);
+finalQuestions.push(legacyRestingQuestions[0], legacyRestingQuestions[2]);
 
 const state = {
   mode: "intro",
@@ -340,7 +341,8 @@ const state = {
   review: [],
   wrongNotes: [],
   profile: "未测",
-  highlightAnchor: ""
+  highlightAnchor: "",
+  pendingReturn: null
 };
 
 const els = {
@@ -423,6 +425,7 @@ function renderLearn() {
       </div>
       <div class="editable-note" contenteditable="true">${section.notes}</div>
       ${state.wrongNotes.filter(n => n.sectionId === section.id).map(renderWrongNoteEditor).join("")}
+      ${state.pendingReturn ? renderReturnPanel() : ""}
       <div class="actions">
         <button class="primary-button" id="learnedBtn">我已学完，进入巩固测试</button>
       </div>
@@ -437,6 +440,8 @@ function renderLearn() {
     state.mode = "intro";
     render();
   });
+  document.querySelector("#returnQuestionBtn")?.addEventListener("click", returnToPendingQuestion);
+  document.querySelector("#continueQuestionBtn")?.addEventListener("click", continueFromPendingQuestion);
   if (state.highlightAnchor) {
     document.querySelector(`#${state.highlightAnchor}`)?.classList.add("highlight-note");
     state.highlightAnchor = "";
@@ -472,10 +477,17 @@ function renderQuestion(isFinal) {
         ${question.options.map((opt, i) => `<button class="option-button" data-answer="${i}"><span class="option-key">${String.fromCharCode(65 + i)}</span><span class="option-text">${opt}</span></button>`).join("")}
       </div>
       <div class="feedback" id="feedbackBox" hidden></div>
+      <div class="actions utility-actions">
+        <button class="secondary-button" id="prevQuestionBtn">上一题</button>
+        <button class="secondary-button" id="retryQuestionBtn">重新回答</button>
+      </div>
       <div class="actions" id="actionBox"></div>
     </section>
   `;
   document.querySelectorAll("[data-answer]").forEach(btn => btn.addEventListener("click", () => submitAnswer(Number(btn.dataset.answer), isFinal)));
+  document.querySelector("#prevQuestionBtn").disabled = !canGoPrevious(isFinal);
+  document.querySelector("#prevQuestionBtn").addEventListener("click", () => goPreviousQuestion(isFinal));
+  document.querySelector("#retryQuestionBtn").addEventListener("click", () => renderQuestion(isFinal));
 }
 
 function submitAnswer(choice, isFinal) {
@@ -521,20 +533,86 @@ function submitAnswer(choice, isFinal) {
 }
 
 function renderGuidedQuestion(question, section, reason, prompt, choice, isFinal) {
+  const probe = buildProbe(reason, prompt);
   const feedback = document.querySelector("#feedbackBox");
   const actions = document.querySelector("#actionBox");
   feedback.className = "feedback wrong";
   feedback.innerHTML = `
-    <p><strong>小问题：</strong>${prompt}</p>
-    <div class="guided-options">
-      <button class="secondary-button" id="guidedA">我能判断，回笔记巩固</button>
-      <button class="secondary-button" id="guidedB">还不清楚，加入错题笔记</button>
+    <div class="guided-question">
+      <div class="guided-head">
+        <p><strong>小问题：</strong>${probe.stem}</p>
+        <button class="secondary-button" id="reviewFromProbeBtn">回笔记复习</button>
+      </div>
+      <div class="guided-choice-grid">
+        ${probe.options.map((opt, index) => `<button class="guided-choice" data-probe="${index}">${String.fromCharCode(65 + index)}. ${opt}</button>`).join("")}
+      </div>
+      <p class="probe-feedback" id="probeFeedback"></p>
     </div>
   `;
   actions.innerHTML = `<button class="primary-button" id="nextAfterGuide">下一题</button>`;
-  document.querySelector("#guidedA").addEventListener("click", () => addWrongAndJump(question, section, reason, prompt, choice, isFinal));
-  document.querySelector("#guidedB").addEventListener("click", () => addWrongAndJump(question, section, reason, prompt, choice, isFinal));
+  document.querySelector("#reviewFromProbeBtn").addEventListener("click", () => addWrongAndJump(question, section, reason, prompt, choice, isFinal));
+  document.querySelectorAll("[data-probe]").forEach(btn => btn.addEventListener("click", () => handleProbeAnswer(Number(btn.dataset.probe), probe)));
   document.querySelector("#nextAfterGuide").addEventListener("click", () => advanceAfterCorrect(isFinal));
+}
+
+function buildProbe(reason, prompt) {
+  if (reason.includes("外液 K+") || reason.includes("外 K+") || prompt.includes("K+ 外流动力")) {
+    return {
+      stem: prompt,
+      options: ["外液 K+ 升高会减小 K+ 外流动力", "外液 K+ 升高会增大 K+ 外流动力"],
+      answer: 0
+    };
+  }
+  if (reason.includes("钠泵") || prompt.includes("钠泵")) {
+    return {
+      stem: prompt,
+      options: ["钠泵主要维持 Na+、K+ 浓度差", "静息电位完全由钠泵直接形成"],
+      answer: 0
+    };
+  }
+  if (reason.includes("通透性") || prompt.includes("通透性")) {
+    return {
+      stem: prompt,
+      options: ["静息电位更接近膜通透性最高离子的平衡电位", "只要有浓度差，通透性相同也能接近 K+ 平衡电位"],
+      answer: 0
+    };
+  }
+  if (reason.includes("局部电位")) {
+    return {
+      stem: prompt,
+      options: ["局部电位有等级性、可叠加", "局部电位全或无、不可叠加"],
+      answer: 0
+    };
+  }
+  if (reason.includes("不应期")) {
+    return {
+      stem: prompt,
+      options: ["绝对不应期兴奋性为零", "绝对不应期强刺激仍可再次兴奋"],
+      answer: 0
+    };
+  }
+  if (reason.includes("Na+") || prompt.includes("Na+")) {
+    return {
+      stem: prompt,
+      options: ["动作电位去极化主要看 Na+ 内流", "静息电位主要由 Na+ 内流形成"],
+      answer: 0
+    };
+  }
+  return {
+    stem: prompt,
+    options: ["先拆机制，再判断选项", "直接记住本题正确答案即可"],
+    answer: 0
+  };
+}
+
+function handleProbeAnswer(choice, probe) {
+  const feedback = document.querySelector("#probeFeedback");
+  document.querySelectorAll("[data-probe]").forEach(btn => btn.classList.remove("correct", "wrong"));
+  const selected = document.querySelector(`[data-probe="${choice}"]`);
+  selected.classList.add(choice === probe.answer ? "correct" : "wrong");
+  feedback.textContent = choice === probe.answer
+    ? "对，这个小点抓住了。可以继续下一题，也可以回笔记巩固。"
+    : "这里还不稳，建议先回笔记复习对应机制，再回到原题。";
 }
 
 function advanceAfterCorrect(isFinal) {
@@ -568,9 +646,72 @@ function advanceAfterCorrect(isFinal) {
   render();
 }
 
+function canGoPrevious(isFinal) {
+  if (isFinal) return state.finalIndex > 0;
+  return state.questionIndex > 0;
+}
+
+function goPreviousQuestion(isFinal) {
+  if (isFinal) {
+    if (state.finalIndex > 0) state.finalIndex -= 1;
+    render();
+    return;
+  }
+  if (state.questionIndex > 0) {
+    state.questionIndex -= 1;
+    render();
+    return;
+  }
+  state.mode = "learn";
+  render();
+}
+
+function renderReturnPanel() {
+  return `
+    <section class="return-panel">
+      <div>
+        <strong>刚才的题目已定位到这里</strong>
+        <p>复习完这段笔记后，可以直接回到原题，也可以从下一题继续探索。</p>
+      </div>
+      <div class="return-actions">
+        <button class="secondary-button" id="returnQuestionBtn">回到原题</button>
+        <button class="primary-button" id="continueQuestionBtn">继续下一题</button>
+      </div>
+    </section>
+  `;
+}
+
+function returnToPendingQuestion() {
+  const target = state.pendingReturn;
+  if (!target) return;
+  state.pendingReturn = null;
+  state.sectionIndex = target.sectionIndex;
+  state.questionIndex = target.questionIndex;
+  state.finalIndex = target.finalIndex;
+  state.mode = target.isFinal ? "final" : "test";
+  render();
+}
+
+function continueFromPendingQuestion() {
+  const target = state.pendingReturn;
+  if (!target) return;
+  state.pendingReturn = null;
+  state.sectionIndex = target.sectionIndex;
+  state.questionIndex = target.questionIndex;
+  state.finalIndex = target.finalIndex;
+  state.mode = target.isFinal ? "final" : "test";
+  advanceAfterCorrect(target.isFinal);
+}
+
 function addWrongAndJump(question, section, reason, explanation, choice, isFinal) {
   const targetSectionIndex = isFinal ? findSectionByAnchor(question.anchor) : state.sectionIndex;
   const targetSection = sections[targetSectionIndex];
+  state.pendingReturn = {
+    isFinal,
+    sectionIndex: state.sectionIndex,
+    questionIndex: state.questionIndex,
+    finalIndex: state.finalIndex
+  };
   state.wrongNotes.push({
     sectionId: targetSection.id,
     section: targetSection.title,
