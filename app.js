@@ -292,7 +292,7 @@ const demo = {
       options: [["A", "减小"], ["B", "增大"]],
       answer: "A",
       correctNext: "q3HintDual",
-      wrongNext: "finalWeak",
+      wrongNext: "finalComplexWeak",
       correctFeedback: "对。外 K+ 升高使 K+ 浓度差减小，K+ 外流动力减弱，静息电位绝对值减小。",
       wrongFeedback: "仍错。说明你对外液 K+ 升高和 K+ 外流动力的方向关系掌握不足。",
       wrongTag: "外液 K+ 升高方向判断错误"
@@ -307,7 +307,7 @@ const demo = {
       options: [["A", "K+"], ["B", "Na+"]],
       answer: "A",
       correctNext: "q3HintDual",
-      wrongNext: "finalWeak",
+      wrongNext: "finalComplexWeak",
       correctFeedback: "对。静息电位主要受 K+ 影响；动作电位上升支主要受 Na+ 内流影响。",
       wrongFeedback: "仍错。说明你仍在混淆静息电位和动作电位的主导离子。",
       wrongTag: "静息电位和动作电位主导离子对调"
@@ -322,7 +322,7 @@ const demo = {
       options: [["A", "K+"], ["B", "Na+"]],
       answer: "A",
       correctNext: "q3HintDual",
-      wrongNext: "finalWeak",
+      wrongNext: "finalComplexWeak",
       correctFeedback: "对。静息状态下膜对 K+ 通透性最高，所以外液 K+ 对静息电位影响明显。",
       wrongFeedback: "仍错。说明你对静息电位的主导通透性掌握不足。",
       wrongTag: "静息时 Na+ 通透性误判"
@@ -337,7 +337,7 @@ const demo = {
       options: [["A", "不是，还受静息膜电位和 Na+ 通道状态影响"], ["B", "是，只由外液 Na+ 浓度决定"]],
       answer: "A",
       correctNext: "q3HintDual",
-      wrongNext: "finalWeak",
+      wrongNext: "finalComplexWeak",
       correctFeedback: "对。题干特意说明未导致 Na+ 通道失活，就是为了限定可以按 Na+ 内流动力增强来判断。",
       wrongFeedback: "仍错。说明你没有识别“未导致 Na+ 通道失活”这个限制条件。",
       wrongTag: "忽略 Na+ 通道状态限制"
@@ -351,10 +351,10 @@ const demo = {
       stem: "提示：外 K+ 升高 -> K+ 外流动力减弱 -> 静息电位绝对值减小；外 Na+ 升高且通道未失活 -> Na+ 内流动力增强 -> 动作电位幅度增大。",
       options: [["A", "静息电位绝对值减小，动作电位幅度增大"], ["B", "静息电位绝对值增大，动作电位幅度减小"]],
       answer: "A",
-      correctNext: "finalUnstable",
-      wrongNext: "finalWeak",
-      correctFeedback: "答对。说明经提示后能把双变量方向纠正回来，标记为掌握不稳。",
-      wrongFeedback: "仍错。两步追问后仍无法处理双变量机制，判定为基础薄弱。",
+      correctNext: "finalComplexUnstable",
+      wrongNext: "finalComplexWeak",
+      correctFeedback: "答对。说明经提示后能把双变量方向纠正回来：基础概念可识别，但复杂情境迁移不稳。",
+      wrongFeedback: "仍错。前两题可答对，但双变量情境下连续回退，判定为复杂迁移失败，需要变量拆解训练。",
       wrongTag: "双变量机制回扣失败"
     },
     finalPass: {
@@ -373,6 +373,22 @@ const demo = {
       mastery: "掌握不稳",
       tags: ["提示后可答对", "需要延迟复测", "错因已定位"]
     },
+    finalComplexUnstable: {
+      final: true,
+      stage: "最终判定",
+      title: "诊断：复杂情境下掌握不稳",
+      result: "学生前两题答对，说明基础概念可识别；第三题在双变量和限制条件混合时出错，但经提示可纠正，判断为复杂情境迁移不稳。",
+      mastery: "复杂迁移不稳",
+      tags: ["基础概念可识别", "复杂情境迁移不稳", "双变量整合需训练", "暂不判定稳定掌握"]
+    },
+    finalComplexWeak: {
+      final: true,
+      stage: "最终判定",
+      title: "诊断：复杂迁移失败",
+      result: "学生前两题答对，但第三题及后续追问仍错，说明不是完全无基础，而是在双变量、长选项和限制条件混合时发生知识回退。",
+      mastery: "复杂迁移薄弱",
+      tags: ["单点题可答对", "复杂选项下知识回退", "需训练变量拆解", "不进入更高难度题"]
+    },
     finalWeak: {
       final: true,
       stage: "最终判定",
@@ -389,10 +405,12 @@ const state = {
   selected: "",
   history: [],
   notes: [],
+  correctIds: new Set(),
   tags: new Set(["未测"]),
   mastery: "未测",
   lastError: "待观察",
-  currentAnsweredCorrect: false
+  currentAnsweredCorrect: false,
+  complexRegression: false
 };
 
 const els = {
@@ -545,6 +563,44 @@ function makeFinalAdvice(mastery) {
   if (mastery === "掌握不稳") {
     return "系统动作：10-30 分钟后推同考点变式题；再次答对后进入延迟复测。";
   }
+  if (mastery === "复杂迁移不稳" || mastery === "复杂迁移薄弱") {
+    return `
+      <p><strong>系统动作：</strong>不清空前两题成绩，将学生画像降级为“基础可识别，复杂迁移不稳”，推送变量拆解训练。</p>
+      <div class="remedial-pack">
+        <h3>变量拆解提示卡：先拆 K+，再拆 Na+</h3>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>变量</th>
+              <th>先判断什么</th>
+              <th>结论</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>外液 K+ 升高</td>
+              <td>内外 K+ 浓度差变小</td>
+              <td>K+ 外流动力减弱，静息电位绝对值减小</td>
+            </tr>
+            <tr>
+              <td>外液 Na+ 升高</td>
+              <td>Na+ 内流动力增强</td>
+              <td>Na+ 通道未失活时，动作电位幅度增大</td>
+            </tr>
+            <tr>
+              <td>限制条件</td>
+              <td>是否导致 Na+ 通道失活</td>
+              <td>若失活，不能机械判定动作电位幅度增大</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="memory-card">
+          <strong>纠偏口诀</strong>
+          <span>外钾升，钾外流弱；外钠升，钠内流强；通道若失活，幅度另商量。</span>
+        </div>
+      </div>
+    `;
+  }
   return `
     <p><strong>系统动作：</strong>推送基础笔记或视频讲解，暂不推高难综合题。</p>
     <div class="remedial-pack">
@@ -616,13 +672,26 @@ function submitAnswer() {
   });
 
   if (correct) {
+    state.correctIds.add(state.currentId);
     if (state.currentId === "q1") state.mastery = "疑似掌握";
     els.noteBtn.hidden = false;
   } else {
-    state.mastery = "诊断中";
+    const hadQ1Q2Correct = state.correctIds.has("q1") && state.correctIds.has("q2");
+    const isQ3Regression = state.currentId === "q3" && hadQ1Q2Correct;
+    state.complexRegression = state.complexRegression || isQ3Regression;
+    state.mastery = isQ3Regression ? "复杂迁移不稳" : "诊断中";
     state.lastError = node.wrongTag || "待定位";
     state.tags.delete("未测");
-    state.tags.add(node.wrongTag || "错因待定位");
+    if (isQ3Regression) {
+      state.tags = new Set([
+        "基础概念可识别",
+        "复杂情境迁移不稳",
+        node.wrongTag || "双变量错因待定位",
+        "需训练变量拆解"
+      ]);
+    } else {
+      state.tags.add(node.wrongTag || "错因待定位");
+    }
   }
 
   els.feedbackBox.hidden = false;
@@ -671,10 +740,12 @@ function restart() {
   state.selected = "";
   state.history = [];
   state.notes = [];
+  state.correctIds = new Set();
   state.tags = new Set(["未测"]);
   state.mastery = "未测";
   state.lastError = "待观察";
   state.currentAnsweredCorrect = false;
+  state.complexRegression = false;
   render();
 }
 
