@@ -35,9 +35,13 @@
         </div>
 
         <section class="question-panel" aria-live="polite">
-          <div class="question-meta">
-            <span id="questionType">五选一定位题</span>
-            <span id="questionPoint">静息电位的产生机制</span>
+          <div class="question-head">
+            <div class="question-meta">
+              <span id="questionType">五选一定位题</span>
+              <span id="questionPoint">静息电位的产生机制</span>
+              <span id="questionSource">真题参考：待加载</span>
+            </div>
+            <button class="note-button" id="noteBtn" type="button" hidden>加入笔记</button>
           </div>
           <h2 id="questionTitle">题目加载中</h2>
           <p class="question-stem" id="questionStem"></p>
@@ -68,6 +72,13 @@
           <h2>学生画像</h2>
           <div class="tag-grid" id="tagGrid">
             <span>未测</span>
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <h2>笔记</h2>
+          <div class="note-log" id="noteLog">
+            <p>答对题目后，可把该题加入笔记。</p>
           </div>
         </section>
 
