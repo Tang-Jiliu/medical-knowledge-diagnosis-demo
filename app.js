@@ -1,6 +1,10 @@
 const chapterIntro = `
   <section class="note-section">
     <h2>细胞的电活动</h2>
+    <div class="video-placeholder">
+      <strong>视频学习窗口</strong>
+      <p>后续可在这里嵌入本节讲解视频。学生先看视频，再读可编辑笔记并完成巩固测试。</p>
+    </div>
     <p><strong>细胞生物电</strong>：细胞在生命活动中伴随的电现象。</p>
     <p><strong>膜电位</strong>：Na+、K+、Cl-、Ca2+ 等带电离子跨膜流动形成的跨膜电位，主要表现为静息电位和动作电位。</p>
     <div class="mini-diagram">
@@ -37,7 +41,7 @@ const sections = [
         <h2>形成机制：浓度差 + K+ 高通透性</h2>
         <p>Na+-K+ 泵维持细胞内高 K+、细胞外高 Na+。静息时膜对 K+ 通透性最高，K+ 顺浓度差外流，使膜内相对变负。</p>
         <p>静息时膜对 Na+ 仍有少量通透性，因此静息电位接近但不完全等于 K+ 平衡电位。</p>
-        <div class="memory-card"><strong>口诀</strong><span>钠泵建差，钾漏成负；钠漏掺一脚，接近不等钾。</span></div>
+        <div class="memory-card"><div><strong>口诀</strong><button class="recite-button" type="button">背</button></div><span>钠泵建差，钾漏成负；钠漏掺一脚，接近不等钾。</span></div>
       </section>
       <section class="note-section" id="note-resting-factors">
         <h2>影响因素</h2>
@@ -102,8 +106,14 @@ const sections = [
       <section class="note-section" id="note-action-basic">
         <h2>动作电位：迅速、可传播的膜电位波动</h2>
         <p>可兴奋细胞在静息电位基础上接受有效刺激后产生动作电位。标志是锋电位，特点是全或无、不衰减传播、脉冲式发放。</p>
-        <div class="wave">
-          <span>a 阈电位</span><span>b-c 快速去极化</span><span>c-d 复极化</span><span>d-e 后超极化</span>
+        <div class="ap-flow">
+          <div class="ap-step"><span>a</span><strong>阈电位</strong><small>Na+ 通道正反馈启动</small></div>
+          <div class="ap-arrow">→</div>
+          <div class="ap-step up"><span>b-c</span><strong>快速去极化</strong><small>Na+ 大量内流</small></div>
+          <div class="ap-arrow">→</div>
+          <div class="ap-step down"><span>c-d</span><strong>复极化</strong><small>K+ 快速外流</small></div>
+          <div class="ap-arrow">→</div>
+          <div class="ap-step after"><span>d-e</span><strong>后超极化</strong><small>低于静息后恢复</small></div>
         </div>
       </section>
       <section class="note-section" id="note-action-mechanism">
@@ -255,6 +265,71 @@ const finalQuestions = [
   }
 ];
 
+const legacyRestingQuestions = [
+  {
+    level: "提升",
+    source: "原三题保留 1：静息电位形成和维持机制综合定位",
+    stem: "关于神经细胞静息电位形成和维持机制，下列哪项叙述最准确？",
+    options: [
+      "静息电位主要由 Na+ 内流形成，因为细胞外 Na+ 浓度高，Na+ 顺浓度梯度进入细胞，使膜内带负电",
+      "静息电位的形成依赖细胞内外 Na+、K+ 浓度差；静息时膜对 K+ 通透性明显高于 Na+，K+ 外流使膜内相对带负电，少量 Na+ 内流使静息电位接近但不等于 K+ 平衡电位",
+      "静息电位完全由 Na+-K+ 泵直接形成，因为钠泵每次将 3 个 Na+ 泵出、2 个 K+ 泵入，使膜内持续失去正电荷",
+      "只要存在细胞内高 K+、细胞外高 Na+ 的浓度差，即使细胞膜对 Na+ 和 K+ 通透性相同，也能形成接近 K+ 平衡电位的静息电位",
+      "Na+-K+ 泵只负责动作电位后恢复离子分布，静息状态下不参与静息电位的形成和维持"
+    ],
+    answer: 1,
+    anchor: "note-resting-mechanism",
+    errorMap: {
+      0: ["主导离子混淆", "先判断：静息电位主要由哪种离子外流形成？"],
+      2: ["钠泵作用夸大", "先判断：钠泵主要是直接产生静息电位，还是维持离子浓度差？"],
+      3: ["忽略选择性通透性", "先判断：膜电位更接近哪种平衡电位，是否取决于膜对该离子的通透性？"],
+      4: ["钠泵维持作用遗漏", "先判断：静息状态下钠泵是否仍持续工作？"]
+    }
+  },
+  {
+    level: "提升",
+    source: "原三题保留 2：静息电位机制迁移验证",
+    stem: "关于神经细胞静息电位及其影响因素，下列哪项叙述正确？",
+    options: [
+      "若静息时膜对 Na+ 和 K+ 通透性相同，静息电位仍主要接近 K+ 平衡电位",
+      "抑制 Na+-K+ 泵后，短时间内静息电位立即消失，长期则基本不影响离子浓度差",
+      "静息电位接近 K+ 平衡电位，是因为静息时膜对 K+ 的通透性远高于 Na+",
+      "细胞外 K+ 浓度升高会增强 K+ 外流，使静息电位绝对值增大",
+      "少量 Na+ 内流会使静息电位比 K+ 平衡电位更负"
+    ],
+    answer: 2,
+    anchor: "note-resting-mechanism",
+    errorMap: {
+      0: ["相对通透性不稳", "先判断：膜电位更靠近谁，主要看浓度差还是相对通透性？"],
+      1: ["钠泵时间尺度混淆", "先判断：抑制钠泵后短时间浓度差是否立即消失？"],
+      3: ["外液 K+ 方向错误", "先判断：外 K+ 升高后 K+ 外流动力增强还是减弱？"],
+      4: ["少量 Na+ 内流方向错误", "先判断：Na+ 内流会让膜内更负还是没那么负？"]
+    }
+  },
+  {
+    level: "最难",
+    source: "原三题保留 3：外液 K+ 和 Na+ 双变量提升验证",
+    stem: "人工适度增加离体神经纤维浸浴液中的 K+ 和 Na+ 浓度（未导致 Na+ 通道失活）后，关于该神经纤维静息电位和动作电位变化机制的叙述，下列哪项最准确？",
+    options: [
+      "外液 K+ 浓度升高使细胞内外 K+ 浓度差增大，K+ 外流增加，静息电位绝对值增大；外液 Na+ 浓度升高使 Na+ 内流增加，动作电位幅度增大",
+      "外液 K+ 浓度升高使细胞内外 K+ 浓度差减小，K+ 外流动力减弱，静息电位绝对值减小；外液 Na+ 浓度升高使 Na+ 内流动力增强，动作电位幅度增大",
+      "外液 K+ 浓度升高主要影响动作电位上升支，外液 Na+ 浓度升高主要影响静息电位，因此静息电位绝对值增大，动作电位幅度减小",
+      "由于静息状态下细胞膜对 Na+ 通透性最高，所以外液 Na+ 浓度升高可明显增加静息电位绝对值；外液 K+ 浓度升高对静息电位影响较小",
+      "只要外液 Na+ 浓度升高，动作电位幅度一定增大，与静息膜电位和 Na+ 通道状态无关"
+    ],
+    answer: 1,
+    anchor: "note-resting-factors",
+    errorMap: {
+      0: ["外液 K+ 方向回退", "先拆 K+：外 K+ 升高后，内外 K+ 浓度差是变大还是变小？"],
+      2: ["K+/Na+ 影响对象对调", "先判断：静息电位主要看 K+，动作电位上升支主要看 Na+。"],
+      3: ["静息时 Na+ 通透性误判", "先判断：静息状态下膜对 K+ 还是 Na+ 通透性最高？"],
+      4: ["忽略通道状态限制", "先判断：动作电位幅度是否还受 Na+ 通道失活状态影响？"]
+    }
+  }
+];
+
+sections[0].questions.push(...legacyRestingQuestions);
+
 const state = {
   mode: "intro",
   sectionIndex: 0,
@@ -287,11 +362,12 @@ function render() {
   if (state.mode === "learn") return renderLearn();
   if (state.mode === "test") return renderQuestion(false);
   if (state.mode === "final") return renderQuestion(true);
+  if (state.mode === "reviewReady") return renderReviewReady();
   renderDone();
 }
 
 function renderStatus() {
-  const labels = { intro: "总览", learn: "笔记学习", test: "巩固测试", final: "混合总结题", done: "完成" };
+  const labels = { intro: "总览", learn: "笔记学习", test: "巩固测试", reviewReady: "章节总复习", final: "混合总结题", done: "完成" };
   els.stage.textContent = labels[state.mode] || "学习";
   els.progress.textContent = `${state.completed.size}/${sections.length}`;
   els.profile.textContent = state.profile;
@@ -304,7 +380,16 @@ function renderSidebars() {
   }).join("");
   els.tagGrid.innerHTML = [...state.tags].map(t => `<span>${t}</span>`).join("");
   els.wrongNoteLog.innerHTML = state.wrongNotes.length
-    ? state.wrongNotes.map(n => `<div class="wrong-note"><strong>${n.section}</strong><p>${n.stem}</p><p>${n.reason}</p></div>`).join("")
+    ? state.wrongNotes.map(n => `
+      <div class="wrong-note">
+        <strong>${n.section}</strong>
+        <p>${n.stem}</p>
+        <ol class="option-mini-list">
+          ${n.options.map((opt, i) => `<li class="${i === n.answer ? "correct" : i === n.selected ? "selected" : ""}">${String.fromCharCode(65 + i)}. ${opt}</li>`).join("")}
+        </ol>
+        <p>${n.reason}</p>
+      </div>
+    `).join("")
     : "<p>错题加入笔记后会出现在这里，学生可在笔记页继续编辑。</p>";
   els.reviewLog.innerHTML = state.review.length
     ? state.review.map(r => `<p>${r}</p>`).join("")
@@ -356,6 +441,7 @@ function renderLearn() {
     document.querySelector(`#${state.highlightAnchor}`)?.classList.add("highlight-note");
     state.highlightAnchor = "";
   }
+  bindReciteButtons();
 }
 
 function renderWrongNoteEditor(note) {
@@ -363,6 +449,9 @@ function renderWrongNoteEditor(note) {
     <section class="wrong-note-editor">
       <h3>错题笔记：${note.reason}</h3>
       <p>${note.stem}</p>
+      <ol class="option-mini-list">
+        ${note.options.map((opt, i) => `<li class="${i === note.answer ? "correct" : i === note.selected ? "selected" : ""}">${String.fromCharCode(65 + i)}. ${opt}</li>`).join("")}
+      </ol>
       <textarea>${note.studentNote}</textarea>
     </section>
   `;
@@ -411,24 +500,41 @@ function submitAnswer(choice, isFinal) {
     return;
   }
 
-  const [reason, explanation] = question.errorMap[choice] || ["错因待定位", "该选项与本题核心机制不符。"];
+  const [reason, prompt] = question.errorMap[choice] || ["错因待定位", "先回到笔记，找到本题对应机制。"];
   feedback.className = "feedback wrong";
   feedback.innerHTML = `
     <p><strong>错因：</strong>${reason}</p>
-    <p><strong>解析：</strong>${explanation}</p>
-    <p><strong>下一步：</strong>加入错题笔记，并回到对应笔记位置重新学习。</p>
+    <p><strong>引导：</strong>${prompt}</p>
+    <p><strong>下一步：</strong>先做一个更小的问题，或者把错题加入笔记并回跳对应笔记。</p>
   `;
   state.profile = isFinal ? "综合迁移不稳" : "需要回炉";
   state.tags = new Set([reason, "已生成错题笔记", "需回跳笔记"]);
   state.review.push(`${isFinal ? "混合题" : section.title}：错选 ${String.fromCharCode(65 + choice)}，${reason}`);
   actions.innerHTML = `
     <button class="primary-button" id="addWrongBtn">错题加入笔记并回到笔记</button>
-    <button class="secondary-button" id="retryBtn">直接重做本题</button>
+    <button class="secondary-button" id="guideBtn">下一题</button>
   `;
-  document.querySelector("#addWrongBtn").addEventListener("click", () => addWrongAndJump(question, section, reason, explanation, isFinal));
-  document.querySelector("#retryBtn").addEventListener("click", () => renderQuestion(isFinal));
+  document.querySelector("#addWrongBtn").addEventListener("click", () => addWrongAndJump(question, section, reason, prompt, choice, isFinal));
+  document.querySelector("#guideBtn").addEventListener("click", () => renderGuidedQuestion(question, section, reason, prompt, choice, isFinal));
   renderStatus();
   renderSidebars();
+}
+
+function renderGuidedQuestion(question, section, reason, prompt, choice, isFinal) {
+  const feedback = document.querySelector("#feedbackBox");
+  const actions = document.querySelector("#actionBox");
+  feedback.className = "feedback wrong";
+  feedback.innerHTML = `
+    <p><strong>小问题：</strong>${prompt}</p>
+    <div class="guided-options">
+      <button class="secondary-button" id="guidedA">我能判断，回笔记巩固</button>
+      <button class="secondary-button" id="guidedB">还不清楚，加入错题笔记</button>
+    </div>
+  `;
+  actions.innerHTML = `<button class="primary-button" id="nextAfterGuide">下一题</button>`;
+  document.querySelector("#guidedA").addEventListener("click", () => addWrongAndJump(question, section, reason, prompt, choice, isFinal));
+  document.querySelector("#guidedB").addEventListener("click", () => addWrongAndJump(question, section, reason, prompt, choice, isFinal));
+  document.querySelector("#nextAfterGuide").addEventListener("click", () => advanceAfterCorrect(isFinal));
 }
 
 function advanceAfterCorrect(isFinal) {
@@ -455,20 +561,23 @@ function advanceAfterCorrect(isFinal) {
     state.mode = "learn";
     state.profile = "上一小节通过";
   } else {
-    state.mode = "final";
+    state.mode = "reviewReady";
     state.finalIndex = 0;
-    state.profile = "进入综合练习";
+    state.profile = "小题完成，等待总复习";
   }
   render();
 }
 
-function addWrongAndJump(question, section, reason, explanation, isFinal) {
+function addWrongAndJump(question, section, reason, explanation, choice, isFinal) {
   const targetSectionIndex = isFinal ? findSectionByAnchor(question.anchor) : state.sectionIndex;
   const targetSection = sections[targetSectionIndex];
   state.wrongNotes.push({
     sectionId: targetSection.id,
     section: targetSection.title,
     stem: question.stem,
+    options: question.options,
+    selected: choice,
+    answer: question.answer,
     reason,
     explanation,
     studentNote: `我的补充：这题错在「${reason}」。${explanation}`
@@ -477,6 +586,30 @@ function addWrongAndJump(question, section, reason, explanation, isFinal) {
   state.highlightAnchor = question.anchor;
   state.mode = "learn";
   render();
+}
+
+function renderReviewReady() {
+  els.main.innerHTML = `
+    <section class="note-document">
+      ${chapterIntro}
+      <div class="feedback done">三个小节的小题已经学完。现在回到章节开头，开始章节总复习。</div>
+      <div class="actions">
+        <button class="primary-button" id="chapterReviewBtn">章节总复习</button>
+        <button class="secondary-button" id="skipReviewBtn">先去下一章</button>
+      </div>
+    </section>
+  `;
+  document.querySelector("#chapterReviewBtn").addEventListener("click", () => {
+    state.mode = "final";
+    state.finalIndex = 0;
+    state.profile = "进入章节总复习";
+    render();
+  });
+  document.querySelector("#skipReviewBtn").addEventListener("click", () => {
+    state.mode = "done";
+    state.profile = "小题已完成，待总复习";
+    render();
+  });
 }
 
 function findSectionByAnchor(anchor) {
@@ -494,13 +627,30 @@ function startSection(index) {
 function renderDone() {
   els.main.innerHTML = `
     <section class="note-document">
-      <h2>本节学习完成</h2>
-      <p>三部分笔记和混合总结题均已完成。系统建议 1-3 天后进行延迟复测。</p>
+      <h2>该部分已全部学习完毕</h2>
+      <p>过两天记得回来复习哦，快开始下一章的学习吧。</p>
       <div class="feedback done">最终画像：${state.profile}</div>
       <div class="actions"><button class="primary-button" id="againBtn">重新开始本节</button></div>
     </section>
   `;
   document.querySelector("#againBtn").addEventListener("click", restart);
+}
+
+function bindReciteButtons() {
+  document.querySelectorAll(".memory-card").forEach(card => {
+    if (card.querySelector(".recite-button")) return;
+    const strong = card.querySelector("strong");
+    if (!strong) return;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "recite-button";
+    button.textContent = "背";
+    strong.insertAdjacentElement("afterend", button);
+    button.addEventListener("click", () => card.classList.toggle("masked"));
+  });
+  document.querySelectorAll(".recite-button").forEach(button => {
+    button.onclick = () => button.closest(".memory-card")?.classList.toggle("masked");
+  });
 }
 
 function restart() {
