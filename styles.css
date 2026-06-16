@@ -127,6 +127,131 @@ h1 {
   padding: 34px 28px 40px;
 }
 
+.main-panel {
+  width: min(980px, 100%);
+  margin: auto;
+  padding: 28px;
+}
+
+.question-panel.compact {
+  padding: 0;
+}
+
+.note-document {
+  display: grid;
+  gap: 18px;
+}
+
+.note-section {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.note-section h2 {
+  margin-bottom: 10px;
+  font-size: 19px;
+}
+
+.note-section p {
+  color: #273330;
+  line-height: 1.8;
+}
+
+.editable-note {
+  display: grid;
+  gap: 16px;
+  outline: none;
+}
+
+.editable-note:focus .note-section {
+  border-color: var(--accent);
+}
+
+.highlight-note {
+  border-color: var(--warn);
+  background: #fff7ed;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.section-card {
+  min-height: 94px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.section-card strong,
+.section-card span {
+  display: block;
+}
+
+.section-card span {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.mini-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-diagram div {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-weight: 700;
+}
+
+.wave {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.wave span {
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--accent-dark);
+  font-weight: 700;
+  text-align: center;
+}
+
+.wrong-note,
+.wrong-note-editor {
+  padding: 12px;
+  border: 1px solid #f0d8bc;
+  background: #fff7ed;
+}
+
+.wrong-note p,
+.wrong-note-editor p {
+  margin: 6px 0 0;
+}
+
+.wrong-note-editor textarea {
+  width: 100%;
+  min-height: 86px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #f0d8bc;
+  resize: vertical;
+  font: inherit;
+  line-height: 1.6;
+}
+
 .question-head {
   display: flex;
   align-items: flex-start;
