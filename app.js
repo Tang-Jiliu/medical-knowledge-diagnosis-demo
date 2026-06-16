@@ -1,10 +1,9 @@
 const demo = {
   flow: [
     "五选一定位题",
-    "二选一拆解追问",
-    "最小讲解与微验证",
+    "错选项追问",
+    "最小提示与再追问",
     "五选一变式验证",
-    "错因追问",
     "最终判定"
   ],
   nodes: {
@@ -12,8 +11,9 @@ const demo = {
       stage: "定位题",
       type: "五选一定位题",
       point: "静息电位的产生机制",
-      title: "关于静息电位的形成机制，下列哪项叙述最准确？",
-      stem: "本题用于判断学生是否能区分静息电位、动作电位去极化和复极化的主导离子。",
+      source: "真题参考：2016 年 306 西医综合第 2 题考查 Na+/K+ 分布；本题为同考点改编",
+      title: "关于静息电位形成机制，下列哪项叙述最准确？",
+      stem: "本题用于定位学生是否能把静息电位的主导离子、平衡电位关系和钠泵作用区分清楚。",
       options: [
         ["A", "静息电位主要由 Na+ 内流形成，因此接近 Na+ 平衡电位"],
         ["B", "静息电位主要由 K+ 外流形成，因此接近但不等于 K+ 平衡电位"],
@@ -23,152 +23,230 @@ const demo = {
       ],
       answer: "B",
       correctNext: "q2",
-      wrongNext: "p1",
-      correctFeedback: "答对。先标记为疑似掌握，需要再做一道变式题排除蒙对。",
-      wrongFeedback: "答错。初步提示：静息电位主要不是 Na+ 内流，而是 K+ 外流；下面用二选一拆解定位错因。",
-      wrongTag: "静息/动作电位主导离子混淆"
+      wrongNext: {
+        A: "q1WrongA",
+        C: "q1WrongC",
+        D: "q1WrongD",
+        E: "q1WrongE"
+      },
+      correctFeedback: "答对。先标记为疑似掌握，继续做一道真题风格变式题，排除蒙对。",
+      wrongFeedback: "答错。先不直接讲全套解析，系统会根据你选错的选项追问一个更小的问题。",
+      wrongTag: "静息电位机制混淆"
     },
-    p1: {
-      stage: "拆解追问",
-      type: "二选一追问",
-      point: "主导离子识别",
-      title: "静息状态下，细胞膜对哪种离子的通透性最高？",
-      stem: "先判断静息电位形成时哪种离子最容易跨膜流动。",
-      options: [["A", "K+"], ["B", "Na+"]],
-      answer: "A",
-      correctNext: "p2",
-      wrongNext: "p2",
-      correctFeedback: "对。静息状态下膜对 K+ 通透性最高。",
-      wrongFeedback: "错。静息状态下膜对 K+ 通透性最高，这是静息电位形成的核心。",
-      wrongTag: "静息状态 K+ 通透性最高未掌握"
-    },
-    p2: {
-      stage: "拆解追问",
-      type: "二选一追问",
-      point: "动作电位对照",
-      title: "动作电位快速去极化的主要原因是：",
-      stem: "通过对照动作电位，确认学生是否把 Na+ 和 K+ 的作用对调了。",
-      options: [["A", "Na+ 快速内流"], ["B", "K+ 快速外流"]],
-      answer: "A",
-      correctNext: "micro1",
-      wrongNext: "micro1",
-      correctFeedback: "对。动作电位快速去极化主要是 Na+ 快速内流。",
-      wrongFeedback: "错。动作电位快速去极化主要是 Na+ 内流；K+ 外流主要参与复极化。",
-      wrongTag: "动作电位去极化机制混淆"
-    },
-    micro1: {
-      stage: "微验证",
-      type: "二选一微型验证",
-      point: "静息电位主因回扣",
-      title: "某神经细胞处于安静状态时，膜电位为内负外正。此状态主要与下列哪项有关？",
-      stem: "最小知识卡：静息电位看 K+ 外流；动作电位快速去极化看 Na+ 内流；复极化看 K+ 外流。",
+    q1WrongA: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 A：Na+ 内流误判",
+      source: "由错选项 A 自动生成",
+      title: "你选择了 A。静息电位主要应该看哪种离子的跨膜流动？",
+      stem: "A 的问题在于把静息电位和动作电位快速去极化混在一起。",
       options: [["A", "K+ 外流"], ["B", "Na+ 内流"]],
+      answer: "A",
+      correctNext: "q1HintIon",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。静息电位主要看 K+ 外流，下一步确认你能不能区分动作电位。",
+      wrongFeedback: "仍错。已经能判断你对静息电位主导离子掌握不足，先进入讲解包更合适。",
+      wrongTag: "把静息电位误认为 Na+ 内流"
+    },
+    q1WrongC: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 C：完全等于 K+ 平衡电位",
+      source: "由错选项 C 自动生成",
+      title: "你选择了 C。静息时细胞膜是否只允许 K+ 通过？",
+      stem: "C 的问题在于忽略了静息时膜对 Na+ 仍有少量通透性。",
+      options: [["A", "不是，Na+ 仍有少量通透性"], ["B", "是，只允许 K+ 通过"]],
+      answer: "A",
+      correctNext: "q1HintIon",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。静息电位接近 K+ 平衡电位，但不完全等于它。",
+      wrongFeedback: "仍错。说明你对“接近但不等于 K+ 平衡电位”的原因掌握不足。",
+      wrongTag: "静息电位与 K+ 平衡电位关系不清"
+    },
+    q1WrongD: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 D：外液 K+ 影响方向",
+      source: "由错选项 D 自动生成",
+      title: "你选择了 D。细胞外 K+ 浓度升高后，细胞内外 K+ 浓度差会怎样？",
+      stem: "D 的问题在于把外液 K+ 升高理解成 K+ 外流动力增强。",
+      options: [["A", "变小"], ["B", "变大"]],
+      answer: "A",
+      correctNext: "q1HintK",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。浓度差变小后，K+ 外流动力会减弱。",
+      wrongFeedback: "仍错。已经能判断你对外液 K+ 变化和扩散动力的关系掌握不足。",
+      wrongTag: "外液 K+ 升高影响方向错误"
+    },
+    q1WrongE: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 E：钠泵生电效应",
+      source: "由错选项 E 自动生成",
+      title: "你选择了 E。钠泵活动增强时，膜电位更可能出现哪种变化？",
+      stem: "E 的问题在于忽略了钠泵除维持离子浓度差外，还有一定生电效应。",
+      options: [["A", "一定程度超级化"], ["B", "立即产生超射"]],
+      answer: "A",
+      correctNext: "q1HintIon",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。钠泵活动增强可使膜发生一定程度超级化。",
+      wrongFeedback: "仍错。说明你对钠泵影响静息电位的方式掌握不足。",
+      wrongTag: "钠泵生电效应不清"
+    },
+    q1HintIon: {
+      stage: "最小提示与再追问",
+      type: "二选一追问 2/2",
+      point: "静息电位与动作电位区分",
+      source: "错后最小提示",
+      title: "动作电位快速去极化的主要原因是：",
+      stem: "提示：静息电位看 K+ 外流；动作电位快速去极化看 Na+ 内流。",
+      options: [["A", "Na+ 快速内流"], ["B", "K+ 快速外流"]],
       answer: "A",
       correctNext: "q2",
       wrongNext: "finalWeak",
-      correctFeedback: "答对。说明主导离子的核心点已被纠正，但仍需变式验证。",
-      wrongFeedback: "仍错。该知识点需要先进入基础讲解包，不建议继续加难度。",
-      wrongTag: "最小纠正后仍未掌握"
+      correctFeedback: "答对。错因已初步纠正，但仍需做变式验证。",
+      wrongFeedback: "仍错。两步追问后仍不能区分 Na+/K+ 作用，判定为掌握不足。",
+      wrongTag: "静息电位与动作电位离子机制混淆"
+    },
+    q1HintK: {
+      stage: "最小提示与再追问",
+      type: "二选一追问 2/2",
+      point: "外液 K+ 对静息电位的影响",
+      source: "错后最小提示",
+      title: "细胞外 K+ 升高，K+ 外流动力减弱，因此静息电位会：",
+      stem: "提示：外液 K+ 升高 -> 内外 K+ 浓度差变小 -> K+ 外流动力减弱 -> 膜内没那么负。",
+      options: [["A", "绝对值减小，发生去极化"], ["B", "绝对值增大，发生超级化"]],
+      answer: "A",
+      correctNext: "q2",
+      wrongNext: "finalWeak",
+      correctFeedback: "答对。错因已初步纠正，但仍需做变式验证。",
+      wrongFeedback: "仍错。两步追问后仍不能判断外液 K+ 影响方向，判定为掌握不足。",
+      wrongTag: "外液 K+ 影响方向掌握不足"
     },
     q2: {
       stage: "变式验证",
       type: "五选一变式题",
-      point: "外液 K+ 对静息电位的影响",
-      title: "若细胞外液 K+ 浓度升高，其他条件不变，则静息电位的变化最可能是：",
-      stem: "本题验证学生能否把 K+ 浓度梯度变化迁移到静息电位方向判断。",
+      point: "外液 K+ 对静息电位与动作电位幅度的影响",
+      source: "真题参考：2019 年 306 西医综合回忆版，细胞外 K+ 浓度升高相关考法改编",
+      title: "人工增加离体神经纤维浸浴液中的 K+ 浓度，则该神经纤维静息电位绝对值和动作电位幅度最可能如何变化？",
+      stem: "本题用于验证学生能否把 K+ 浓度梯度变化迁移到真题常见问法。",
       options: [
-        ["A", "静息电位绝对值增大，细胞膜发生超级化"],
-        ["B", "静息电位绝对值减小，细胞膜发生去极化"],
-        ["C", "静息电位绝对值不变，因为静息电位只由钠泵决定"],
-        ["D", "静息电位变得更接近 Na+ 平衡电位"],
-        ["E", "静息电位立即产生超射"]
+        ["A", "二者均增大"],
+        ["B", "二者均减小"],
+        ["C", "静息电位绝对值增大，动作电位幅度减小"],
+        ["D", "静息电位绝对值减小，动作电位幅度增大"],
+        ["E", "静息电位绝对值不变，动作电位幅度增大"]
       ],
       answer: "B",
       correctNext: "finalPass",
-      wrongNext: "k1",
+      wrongNext: {
+        A: "q2WrongA",
+        C: "q2WrongC",
+        D: "q2WrongD",
+        E: "q2WrongE"
+      },
       correctFeedback: "答对。定位题和变式题均通过，可判定该知识点当场通过。",
-      wrongFeedback: "答错。薄弱点转向：外液 K+ 升高后，浓度梯度和静息电位方向判断不稳。",
-      wrongTag: "外液 K+ 升高影响方向错误"
+      wrongFeedback: "答错。先根据错选项追问一个最小问题，判断是方向错还是动作电位幅度理解错。",
+      wrongTag: "外液 K+ 变式题错误"
     },
-    k1: {
-      stage: "错因追问",
-      type: "二选一追问",
-      point: "K+ 浓度梯度",
-      title: "细胞外 K+ 浓度升高时，细胞内外 K+ 浓度差会：",
-      stem: "细胞内本来高 K+，细胞外 K+ 升高后，两边差距被拉近。",
+    q2WrongA: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 A：二者均增大误判",
+      source: "由错选项 A 自动生成",
+      title: "外液 K+ 升高时，静息电位绝对值首先会：",
+      stem: "A 的问题在于把外液 K+ 升高理解为静息电位更负。",
+      options: [["A", "减小"], ["B", "增大"]],
+      answer: "A",
+      correctNext: "q2HintAmplitude",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。静息电位绝对值减小，细胞去极化。",
+      wrongFeedback: "仍错。说明外液 K+ 对静息电位方向的影响掌握不足。",
+      wrongTag: "外液 K+ 对静息电位方向判断错误"
+    },
+    q2WrongC: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 C：静息电位绝对值方向错",
+      source: "由错选项 C 自动生成",
+      title: "外液 K+ 升高后，K+ 外流动力会：",
+      stem: "C 的问题在于静息电位绝对值方向判断反了。",
+      options: [["A", "减弱"], ["B", "增强"]],
+      answer: "A",
+      correctNext: "q2HintAmplitude",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。K+ 外流动力减弱，静息电位绝对值减小。",
+      wrongFeedback: "仍错。说明浓度差和外流动力这一步没有打通。",
+      wrongTag: "K+ 外流动力判断错误"
+    },
+    q2WrongD: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 D：动作电位幅度误判",
+      source: "由错选项 D 自动生成",
+      title: "静息电位绝对值减小后，离 Na+ 平衡电位的距离通常会：",
+      stem: "D 的问题在于动作电位幅度方向判断反了。",
       options: [["A", "变小"], ["B", "变大"]],
       answer: "A",
-      correctNext: "k2",
-      wrongNext: "k2",
-      correctFeedback: "对。内外 K+ 浓度差变小。",
-      wrongFeedback: "错。外 K+ 升高后，内外 K+ 浓度差会变小。",
-      wrongTag: "K+ 浓度梯度变化判断错误"
-    },
-    k2: {
-      stage: "错因追问",
-      type: "二选一追问",
-      point: "K+ 外流动力",
-      title: "如果细胞内 K+ 浓度很高，细胞外 K+ 浓度也升高，那么 K+ 从细胞内向细胞外扩散的动力会：",
-      stem: "差距变小，扩散动力减弱；差距变大，扩散动力增强。",
-      options: [["A", "减弱"], ["B", "增强"]],
-      answer: "A",
-      correctNext: "micro2",
-      wrongNext: "analogy",
-      correctFeedback: "对。K+ 外流动力减弱。",
-      wrongFeedback: "错。这里先用一个生活类比重建直觉。",
-      wrongTag: "扩散动力逻辑未建立"
-    },
-    analogy: {
-      stage: "错因追问",
-      type: "二选一类比题",
-      point: "浓度差直觉",
-      title: "如果房间里人很多，走廊里人很少，大家从房间往走廊走的趋势很强。现在走廊里人也变多了，这种趋势会：",
-      stem: "类比只服务于理解“差距变小，外流趋势减弱”。",
-      options: [["A", "减弱"], ["B", "增强"]],
-      answer: "A",
-      correctNext: "micro2",
+      correctNext: "q2HintAmplitude",
       wrongNext: "finalWeak",
-      correctFeedback: "对。把这个直觉迁回 K+ 外流即可。",
-      wrongFeedback: "仍错。说明基础扩散逻辑也需要补。",
-      wrongTag: "基础浓度差逻辑薄弱"
+      correctFeedback: "对。起点没那么负，动作电位幅度通常减小。",
+      wrongFeedback: "仍错。说明动作电位幅度与起点/峰值关系掌握不足。",
+      wrongTag: "动作电位幅度判断错误"
     },
-    micro2: {
-      stage: "微验证",
-      type: "二选一微型验证",
-      point: "外液 K+ 影响回扣",
-      title: "细胞外 K+ 浓度升高时，K+ 外流动力减弱，因此静息电位会：",
-      stem: "外 K+ 升高 → K+ 外流动力减弱 → 膜内没那么负 → 静息电位绝对值减小 → 去极化。",
-      options: [["A", "绝对值减小，发生去极化"], ["B", "绝对值增大，发生超级化"]],
+    q2WrongE: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 E：静息电位不变误判",
+      source: "由错选项 E 自动生成",
+      title: "静息电位大小是否会受细胞外 K+ 浓度影响？",
+      stem: "E 的问题在于忽略了静息电位接近 K+ 平衡电位。",
+      options: [["A", "会"], ["B", "不会"]],
+      answer: "A",
+      correctNext: "q2HintAmplitude",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。外液 K+ 改变会明显影响静息电位。",
+      wrongFeedback: "仍错。说明静息电位与 K+ 平衡电位关系掌握不足。",
+      wrongTag: "外液 K+ 与静息电位关系不清"
+    },
+    q2HintAmplitude: {
+      stage: "最小提示与再追问",
+      type: "二选一追问 2/2",
+      point: "动作电位幅度回扣",
+      source: "错后最小提示",
+      title: "外液 K+ 升高使静息电位绝对值减小，动作电位幅度通常会：",
+      stem: "提示：静息电位从 -70 mV 变成 -55 mV，起点更接近 0，动作电位从起点到峰值的幅度会变小。",
+      options: [["A", "减小"], ["B", "增大"]],
       answer: "A",
       correctNext: "finalUnstable",
       wrongNext: "finalWeak",
-      correctFeedback: "答对。说明纠正后能回到医学表述，但应标记为掌握不稳。",
-      wrongFeedback: "仍错。需要进入基础讲解包，并安排稍后复测。",
-      wrongTag: "外液 K+ 影响纠正失败"
+      correctFeedback: "答对。说明经提示后可纠正，标记为掌握不稳。",
+      wrongFeedback: "仍错。两步追问后仍无法回扣机制，判定为掌握不足。",
+      wrongTag: "动作电位幅度机制掌握不足"
     },
     finalPass: {
       final: true,
       stage: "最终判定",
       title: "知识点当场通过",
-      result: "定位题与变式验证题均答对，暂定为当场通过。建议 1-3 天后延迟复测，确认稳定掌握。",
+      result: "定位题与真题风格变式题均答对，暂定为当场通过。建议 1-3 天后延迟复测，确认稳定掌握。",
       mastery: "当场通过",
       tags: ["疑似稳定掌握", "建议延迟复测"]
     },
     finalUnstable: {
       final: true,
       stage: "最终判定",
-      title: "掌握不稳，纠正后可答对",
-      result: "学生经拆解追问后能答对微验证题。建议标记为掌握不稳，10-30 分钟后推送同考点变式复测。",
+      title: "掌握不稳，提示后可答对",
+      result: "学生在定位题或变式题中出错，但经过两步以内追问后可以答对。建议标记为掌握不稳，稍后推同考点复测。",
       mastery: "掌握不稳",
-      tags: ["Na+/K+ 机制混淆", "外液 K+ 影响方向不稳", "纠正后可答对"]
+      tags: ["提示后可答对", "需要延迟复测", "错因已定位"]
     },
     finalWeak: {
       final: true,
       stage: "最终判定",
-      title: "基础薄弱，进入讲解包",
-      result: "学生在最小拆解后仍无法答对，需要先补充基础讲解，再进行二选一确认题和延迟复测。",
+      title: "掌握不足，进入讲解包",
+      result: "学生在针对错选项的追问或最小提示后仍无法答对。系统不再继续追问，直接推送讲解卡和基础确认题。",
       mastery: "明确薄弱",
-      tags: ["基础概念薄弱", "需要讲解包", "暂不加难度"]
+      tags: ["两步追问仍错", "需要讲解包", "暂不加难度"]
     }
   }
 };
@@ -177,9 +255,11 @@ const state = {
   currentId: "q1",
   selected: "",
   history: [],
+  notes: [],
   tags: new Set(["未测"]),
   mastery: "未测",
-  lastError: "待观察"
+  lastError: "待观察",
+  currentAnsweredCorrect: false
 };
 
 const els = {
@@ -188,31 +268,38 @@ const els = {
   errorLabel: document.querySelector("#errorLabel"),
   questionType: document.querySelector("#questionType"),
   questionPoint: document.querySelector("#questionPoint"),
+  questionSource: document.querySelector("#questionSource"),
   questionTitle: document.querySelector("#questionTitle"),
   questionStem: document.querySelector("#questionStem"),
   optionsList: document.querySelector("#optionsList"),
   feedbackBox: document.querySelector("#feedbackBox"),
   submitBtn: document.querySelector("#submitBtn"),
   nextBtn: document.querySelector("#nextBtn"),
+  noteBtn: document.querySelector("#noteBtn"),
   restartBtn: document.querySelector("#restartBtn"),
   flowList: document.querySelector("#flowList"),
-  knowledgeCard: document.querySelector("#knowledgeCard"),
   tagGrid: document.querySelector("#tagGrid"),
-  reviewLog: document.querySelector("#reviewLog")
+  reviewLog: document.querySelector("#reviewLog"),
+  noteLog: document.querySelector("#noteLog")
 };
 
 function render() {
   const node = demo.nodes[state.currentId];
   state.selected = "";
+  state.currentAnsweredCorrect = false;
   els.feedbackBox.hidden = true;
   els.feedbackBox.className = "feedback";
   els.nextBtn.hidden = true;
+  els.noteBtn.hidden = true;
+  els.noteBtn.disabled = false;
+  els.noteBtn.textContent = "加入笔记";
   els.submitBtn.disabled = true;
 
   renderStatus(node);
   renderFlow(node);
   renderTags();
   renderReview();
+  renderNotes();
 
   if (node.final) {
     renderFinal(node);
@@ -221,6 +308,7 @@ function render() {
 
   els.questionType.textContent = node.type;
   els.questionPoint.textContent = node.point;
+  els.questionSource.textContent = node.source;
   els.questionTitle.textContent = node.title;
   els.questionStem.textContent = node.stem;
   els.submitBtn.hidden = false;
@@ -278,6 +366,20 @@ function renderReview() {
   });
 }
 
+function renderNotes() {
+  if (!state.notes.length) {
+    els.noteLog.innerHTML = "<p>答对题目后，可把该题加入笔记。</p>";
+    return;
+  }
+
+  els.noteLog.innerHTML = "";
+  state.notes.forEach((note) => {
+    const p = document.createElement("p");
+    p.textContent = `${note.point}：${note.title}`;
+    els.noteLog.appendChild(p);
+  });
+}
+
 function renderFinal(node) {
   state.mastery = node.mastery;
   state.tags = new Set(node.tags);
@@ -289,15 +391,18 @@ function renderFinal(node) {
 
   els.questionType.textContent = "闭环完成";
   els.questionPoint.textContent = "诊断结果";
+  els.questionSource.textContent = "系统判定";
   els.questionTitle.textContent = node.title;
   els.questionStem.textContent = node.result;
   els.optionsList.innerHTML = "";
   els.submitBtn.hidden = true;
   els.nextBtn.hidden = true;
+  els.noteBtn.hidden = true;
   els.feedbackBox.hidden = false;
   els.feedbackBox.className = node.mastery === "当场通过" ? "feedback done" : "feedback wrong";
   els.feedbackBox.textContent = makeFinalAdvice(node.mastery);
   renderReview();
+  renderNotes();
 }
 
 function makeFinalAdvice(mastery) {
@@ -324,6 +429,7 @@ function submitAnswer() {
 
   const correct = state.selected === node.answer;
   const note = correct ? node.correctFeedback : node.wrongFeedback;
+  state.currentAnsweredCorrect = correct;
   state.history.push({
     title: node.point,
     choice: state.selected,
@@ -332,7 +438,8 @@ function submitAnswer() {
   });
 
   if (correct) {
-    state.mastery = state.currentId === "q1" ? "疑似掌握" : state.mastery;
+    if (state.currentId === "q1") state.mastery = "疑似掌握";
+    els.noteBtn.hidden = false;
   } else {
     state.mastery = "诊断中";
     state.lastError = node.wrongTag || "待定位";
@@ -345,10 +452,33 @@ function submitAnswer() {
   els.feedbackBox.textContent = note;
   els.submitBtn.disabled = true;
   els.nextBtn.hidden = false;
-  els.nextBtn.dataset.next = correct ? node.correctNext : node.wrongNext;
+  els.nextBtn.dataset.next = getNextNodeId(node, correct, state.selected);
   renderStatus(node);
   renderTags();
   renderReview();
+}
+
+function getNextNodeId(node, correct, selected) {
+  const next = correct ? node.correctNext : node.wrongNext;
+  if (typeof next === "string") return next;
+  return next[selected] || "finalWeak";
+}
+
+function addNote() {
+  const node = demo.nodes[state.currentId];
+  if (!state.currentAnsweredCorrect || node.final) return;
+
+  const alreadyAdded = state.notes.some((note) => note.id === state.currentId);
+  if (!alreadyAdded) {
+    state.notes.push({
+      id: state.currentId,
+      point: node.point,
+      title: node.title
+    });
+  }
+  els.noteBtn.textContent = "已加入";
+  els.noteBtn.disabled = true;
+  renderNotes();
 }
 
 function goNext() {
@@ -362,14 +492,17 @@ function restart() {
   state.currentId = "q1";
   state.selected = "";
   state.history = [];
+  state.notes = [];
   state.tags = new Set(["未测"]);
   state.mastery = "未测";
   state.lastError = "待观察";
+  state.currentAnsweredCorrect = false;
   render();
 }
 
 els.submitBtn.addEventListener("click", submitAnswer);
 els.nextBtn.addEventListener("click", goNext);
+els.noteBtn.addEventListener("click", addNote);
 els.restartBtn.addEventListener("click", restart);
 
 render();
