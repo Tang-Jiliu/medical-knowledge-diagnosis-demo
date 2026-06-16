@@ -3,125 +3,75 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>306 医学知识点诊断闭环 Demo</title>
+    <title>细胞的电活动学习闭环 Demo</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <main class="app-shell">
-      <section class="workspace" aria-label="诊断工作台">
+      <section class="workspace">
         <header class="topbar">
           <div>
-            <p class="eyebrow">306 考研医学 · 交互诊断闭环</p>
-            <h1>静息电位知识点定位</h1>
+            <p class="eyebrow">306 考研医学 · 生理学</p>
+            <h1>第三节 细胞的电活动</h1>
           </div>
-          <button class="icon-button" id="restartBtn" type="button" aria-label="重新开始" title="重新开始">
-            <span aria-hidden="true">↻</span>
-          </button>
+          <button class="icon-button" id="restartBtn" type="button" title="重新开始">↻</button>
         </header>
 
-        <div class="status-strip" aria-label="当前诊断状态">
+        <div class="status-strip">
           <div class="status-item">
-            <span>阶段</span>
-            <strong id="stageLabel">定位题</strong>
+            <span>当前阶段</span>
+            <strong id="stageLabel">笔记学习</strong>
           </div>
           <div class="status-item">
-            <span>掌握度</span>
-            <strong id="masteryLabel">未测</strong>
+            <span>章节进度</span>
+            <strong id="progressLabel">0/3</strong>
           </div>
           <div class="status-item">
-            <span>错因</span>
-            <strong id="errorLabel">待观察</strong>
+            <span>学生画像</span>
+            <strong id="profileLabel">未测</strong>
           </div>
         </div>
 
-        <section class="question-panel" aria-live="polite">
-          <div class="question-head">
-            <div class="question-meta">
-              <span id="questionType">五选一定位题</span>
-              <span id="questionPoint">静息电位的产生机制</span>
-              <span id="questionSource">真题参考：待加载</span>
-            </div>
-            <button class="note-button" id="noteBtn" type="button" hidden>加入笔记</button>
-          </div>
-          <h2 id="questionTitle">题目加载中</h2>
-          <p class="question-stem" id="questionStem"></p>
-          <div class="options" id="optionsList"></div>
-          <div class="feedback" id="feedbackBox" hidden></div>
-          <div class="actions">
-            <button class="primary-button" id="submitBtn" type="button" disabled>提交答案</button>
-            <button class="secondary-button" id="nextBtn" type="button" hidden>继续</button>
-          </div>
-        </section>
+        <section class="main-panel" id="mainPanel" aria-live="polite"></section>
       </section>
 
-      <aside class="inspector" aria-label="诊断结果">
+      <aside class="inspector">
         <section class="inspector-section">
-          <h2>流程进度</h2>
-          <ol class="flow-list" id="flowList"></ol>
-        </section>
-
-        <section class="inspector-section">
-          <h2>流程图</h2>
-          <div class="flowchart" aria-label="诊断闭环流程图">
-            <div class="flow-node">1 定位题</div>
-            <div class="flow-arrow">答对 ↓</div>
-            <div class="flow-node">2 中等变式验证</div>
-            <div class="flow-arrow">答对 ↓</div>
-            <div class="flow-node hard">3 双变量提升验证</div>
+          <h2>学习流程</h2>
+          <div class="flowchart">
+            <div class="flow-node">章节笔记</div>
+            <div class="flow-arrow">学完 ↓</div>
+            <div class="flow-node">2 题巩固测试</div>
             <div class="flow-split">
-              <div>
-                <span>全对</span>
-                <strong>当场通过</strong>
-              </div>
-              <div>
-                <span>第 3 题错</span>
-                <strong>复杂迁移回退</strong>
-              </div>
-              <div>
-                <span>任一题错</span>
-                <strong>错选项追问</strong>
-              </div>
+              <div><span>通过</span><strong>进入下一部分</strong></div>
+              <div><span>未通过</span><strong>错因分析 + 回跳笔记</strong></div>
             </div>
-            <div class="flow-arrow">追问最多 2 步 ↓</div>
-            <div class="flow-split">
-              <div>
-                <span>提示后答对</span>
-                <strong>掌握不稳</strong>
-              </div>
-              <div>
-                <span>仍答错</span>
-                <strong>推送笔记/视频</strong>
-              </div>
-            </div>
+            <div class="flow-arrow">三部分完成 ↓</div>
+            <div class="flow-node hard">混合总结题</div>
           </div>
         </section>
 
         <section class="inspector-section">
-          <h2>知识卡</h2>
-          <div class="knowledge-card" id="knowledgeCard">
-            <strong>静息电位：浓度差 + 选择性通透性 + 钠泵维持</strong>
-            <p>静息电位主要看 K+ 外流；动作电位快速去极化主要看 Na+ 内流。</p>
-          </div>
+          <h2>本节结构</h2>
+          <ol class="flow-list" id="sectionList"></ol>
         </section>
 
         <section class="inspector-section">
           <h2>学生画像</h2>
-          <div class="tag-grid" id="tagGrid">
-            <span>未测</span>
-          </div>
+          <div class="tag-grid" id="tagGrid"><span>未测</span></div>
         </section>
 
         <section class="inspector-section">
-          <h2>笔记</h2>
-          <div class="note-log" id="noteLog">
-            <p>答对题目后，可把该题加入笔记。</p>
+          <h2>错题笔记</h2>
+          <div class="note-log" id="wrongNoteLog">
+            <p>错题加入笔记后会出现在这里，学生可在笔记页继续编辑。</p>
           </div>
         </section>
 
         <section class="inspector-section">
           <h2>复盘</h2>
           <div class="review-log" id="reviewLog">
-            <p>学生作答后，这里会记录每一步的判断依据。</p>
+            <p>完成测试后，这里会记录每一步诊断。</p>
           </div>
         </section>
       </aside>
