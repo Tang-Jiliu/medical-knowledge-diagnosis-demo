@@ -243,6 +243,64 @@ h1 {
   background: #f0fdf4;
 }
 
+.feedback p {
+  margin: 0 0 10px;
+}
+
+.remedial-pack {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.remedial-pack h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+.mini-table th,
+.mini-table td {
+  padding: 9px 10px;
+  border: 1px solid #f0d8bc;
+  text-align: left;
+  vertical-align: top;
+}
+
+.mini-table th {
+  background: #ffedd5;
+  color: #7c2d12;
+}
+
+.memory-card,
+.media-placeholder {
+  padding: 12px;
+  border: 1px solid #f0d8bc;
+  background: #fff;
+}
+
+.memory-card {
+  display: grid;
+  gap: 6px;
+}
+
+.memory-card strong,
+.media-placeholder span {
+  color: #7c2d12;
+  font-weight: 800;
+}
+
+.media-placeholder p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
