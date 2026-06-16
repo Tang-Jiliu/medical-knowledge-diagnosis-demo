@@ -4,6 +4,7 @@ const demo = {
     "错选项追问",
     "最小提示与再追问",
     "五选一变式验证",
+    "双变量提升验证",
     "最终判定"
   ],
   nodes: {
@@ -153,7 +154,7 @@ const demo = {
         ["E", "少量 Na+ 内流会使静息电位比 K+ 平衡电位更负"]
       ],
       answer: "C",
-      correctNext: "finalPass",
+      correctNext: "q3",
       wrongNext: {
         A: "q2WrongA",
         B: "q2WrongB",
@@ -161,7 +162,7 @@ const demo = {
         D: "q2WrongD",
         E: "q2WrongE"
       },
-      correctFeedback: "答对。C 抓住了静息电位接近 K+ 平衡电位的关键条件：静息时膜对 K+ 的通透性远高于 Na+。",
+      correctFeedback: "答对。C 抓住了静息电位接近 K+ 平衡电位的关键条件：静息时膜对 K+ 的通透性远高于 Na+。继续做最后一道更难的双变量提升验证。",
       wrongFeedback: "答错。系统会根据错选项判断你是忽略相对通透性、误解钠泵、误判外液 K+，还是误判少量 Na+ 内流的方向。",
       wrongTag: "静息电位机制迁移错误"
     },
@@ -255,11 +256,112 @@ const demo = {
       wrongFeedback: "仍错。两步追问后仍无法回扣静息电位核心机制，判定为基础薄弱。",
       wrongTag: "静息电位核心机制回扣失败"
     },
+    q3: {
+      stage: "双变量提升验证",
+      type: "五选一提升题",
+      point: "外液 K+ 与 Na+ 同时升高的综合判断",
+      source: "用户改题：双变量综合迁移，难度高于第 2 题",
+      title: "人工适度增加离体神经纤维浸浴液中的 K+ 和 Na+ 浓度（未导致 Na+ 通道失活）后，关于该神经纤维静息电位和动作电位变化机制的叙述，下列哪项最准确？",
+      stem: "本题同时考查外液 K+ 对静息电位的影响、外液 Na+ 对动作电位上升幅度的影响，以及 Na+ 通道未失活这一限制条件。",
+      options: [
+        ["A", "外液 K+ 浓度升高使细胞内外 K+ 浓度差增大，K+ 外流增加，静息电位绝对值增大；外液 Na+ 浓度升高使 Na+ 内流增加，动作电位幅度增大"],
+        ["B", "外液 K+ 浓度升高使细胞内外 K+ 浓度差减小，K+ 外流动力减弱，静息电位绝对值减小；外液 Na+ 浓度升高使 Na+ 内流动力增强，动作电位幅度增大"],
+        ["C", "外液 K+ 浓度升高主要影响动作电位上升支，外液 Na+ 浓度升高主要影响静息电位，因此静息电位绝对值增大，动作电位幅度减小"],
+        ["D", "由于静息状态下细胞膜对 Na+ 通透性最高，所以外液 Na+ 浓度升高可明显增加静息电位绝对值；外液 K+ 浓度升高对静息电位影响较小"],
+        ["E", "只要外液 Na+ 浓度升高，动作电位幅度一定增大，与静息膜电位和 Na+ 通道状态无关"]
+      ],
+      answer: "B",
+      correctNext: "finalPass",
+      wrongNext: {
+        A: "q3WrongA",
+        C: "q3WrongC",
+        D: "q3WrongD",
+        E: "q3WrongE"
+      },
+      correctFeedback: "答对。B 同时判断对了两条链：外 K+ 升高使 K+ 外流动力减弱，静息电位绝对值减小；外 Na+ 升高且 Na+ 通道未失活时，Na+ 内流动力增强，动作电位幅度增大。",
+      wrongFeedback: "答错。系统会根据错选项判断你卡在外 K+、外 Na+、主导通透性，还是“通道状态限制条件”。",
+      wrongTag: "双变量综合迁移错误"
+    },
+    q3WrongA: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 A：外液 K+ 方向判断反了",
+      source: "由错选项 A 自动生成",
+      title: "你选择了 A。外液 K+ 浓度升高后，细胞内外 K+ 浓度差会：",
+      stem: "A 的后半句关于外 Na+ 的方向基本正确，主要错误在前半句：外液 K+ 升高不会增大 K+ 外流动力。",
+      options: [["A", "减小"], ["B", "增大"]],
+      answer: "A",
+      correctNext: "q3HintDual",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。外 K+ 升高使 K+ 浓度差减小，K+ 外流动力减弱，静息电位绝对值减小。",
+      wrongFeedback: "仍错。说明你对外液 K+ 升高和 K+ 外流动力的方向关系掌握不足。",
+      wrongTag: "外液 K+ 升高方向判断错误"
+    },
+    q3WrongC: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 C：K+/Na+ 影响对象对调",
+      source: "由错选项 C 自动生成",
+      title: "你选择了 C。静息电位主要受哪种离子的通透性和浓度梯度影响？",
+      stem: "C 把外液 K+ 和外液 Na+ 的主要影响对象对调了。静息电位主要看 K+，动作电位上升幅度主要看 Na+。",
+      options: [["A", "K+"], ["B", "Na+"]],
+      answer: "A",
+      correctNext: "q3HintDual",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。静息电位主要受 K+ 影响；动作电位上升支主要受 Na+ 内流影响。",
+      wrongFeedback: "仍错。说明你仍在混淆静息电位和动作电位的主导离子。",
+      wrongTag: "静息电位和动作电位主导离子对调"
+    },
+    q3WrongD: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 D：静息时 Na+ 通透性误判",
+      source: "由错选项 D 自动生成",
+      title: "你选择了 D。静息状态下，细胞膜对哪种离子的通透性最高？",
+      stem: "D 的核心错误是把静息状态下的主导通透性说成 Na+。静息时膜对 K+ 通透性明显高于 Na+。",
+      options: [["A", "K+"], ["B", "Na+"]],
+      answer: "A",
+      correctNext: "q3HintDual",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。静息状态下膜对 K+ 通透性最高，所以外液 K+ 对静息电位影响明显。",
+      wrongFeedback: "仍错。说明你对静息电位的主导通透性掌握不足。",
+      wrongTag: "静息时 Na+ 通透性误判"
+    },
+    q3WrongE: {
+      stage: "错选项追问",
+      type: "二选一追问 1/2",
+      point: "针对错选 E：忽略通道状态限制",
+      source: "由错选项 E 自动生成",
+      title: "你选择了 E。动作电位幅度是否只由外液 Na+ 浓度决定？",
+      stem: "E 的错误是把“外液 Na+ 升高”说成无条件一定增大动作电位幅度，忽略了静息膜电位和 Na+ 通道失活状态。",
+      options: [["A", "不是，还受静息膜电位和 Na+ 通道状态影响"], ["B", "是，只由外液 Na+ 浓度决定"]],
+      answer: "A",
+      correctNext: "q3HintDual",
+      wrongNext: "finalWeak",
+      correctFeedback: "对。题干特意说明未导致 Na+ 通道失活，就是为了限定可以按 Na+ 内流动力增强来判断。",
+      wrongFeedback: "仍错。说明你没有识别“未导致 Na+ 通道失活”这个限制条件。",
+      wrongTag: "忽略 Na+ 通道状态限制"
+    },
+    q3HintDual: {
+      stage: "最小提示与再追问",
+      type: "二选一追问 2/2",
+      point: "双变量机制回扣",
+      source: "错后最小提示",
+      title: "外液 K+ 和 Na+ 同时适度升高且 Na+ 通道未失活时，最合理的方向判断是：",
+      stem: "提示：外 K+ 升高 -> K+ 外流动力减弱 -> 静息电位绝对值减小；外 Na+ 升高且通道未失活 -> Na+ 内流动力增强 -> 动作电位幅度增大。",
+      options: [["A", "静息电位绝对值减小，动作电位幅度增大"], ["B", "静息电位绝对值增大，动作电位幅度减小"]],
+      answer: "A",
+      correctNext: "finalUnstable",
+      wrongNext: "finalWeak",
+      correctFeedback: "答对。说明经提示后能把双变量方向纠正回来，标记为掌握不稳。",
+      wrongFeedback: "仍错。两步追问后仍无法处理双变量机制，判定为基础薄弱。",
+      wrongTag: "双变量机制回扣失败"
+    },
     finalPass: {
       final: true,
       stage: "最终判定",
       title: "知识点当场通过",
-      result: "定位题与真题风格变式题均答对，暂定为当场通过。建议 1-3 天后延迟复测，确认稳定掌握。",
+      result: "定位题、中等变式题和双变量提升题均答对，暂定为当场通过。建议 1-3 天后延迟复测，确认稳定掌握。",
       mastery: "当场通过",
       tags: ["疑似稳定掌握", "建议延迟复测"]
     },
