@@ -243,8 +243,8 @@ const demo = {
     finalWeak: {
       final: true,
       stage: "最终判定",
-      title: "掌握不足，进入讲解包",
-      result: "学生在针对错选项的追问或最小提示后仍无法答对。系统不再继续追问，直接推送讲解卡和基础确认题。",
+      title: "诊断：该生基础薄弱",
+      result: "学生在针对错选项的追问或最小提示后仍无法答对，说明该知识点基础薄弱，需推送笔记或视频讲解。",
       mastery: "明确薄弱",
       tags: ["两步追问仍错", "需要讲解包", "暂不加难度"]
     }
@@ -400,7 +400,7 @@ function renderFinal(node) {
   els.noteBtn.hidden = true;
   els.feedbackBox.hidden = false;
   els.feedbackBox.className = node.mastery === "当场通过" ? "feedback done" : "feedback wrong";
-  els.feedbackBox.textContent = makeFinalAdvice(node.mastery);
+  els.feedbackBox.innerHTML = makeFinalAdvice(node.mastery);
   renderReview();
   renderNotes();
 }
@@ -412,7 +412,47 @@ function makeFinalAdvice(mastery) {
   if (mastery === "掌握不稳") {
     return "系统动作：10-30 分钟后推同考点变式题；再次答对后进入延迟复测。";
   }
-  return "系统动作：推送最小讲解卡和基础二选一确认题，暂不推高难综合题。";
+  return `
+    <p><strong>系统动作：</strong>推送基础笔记或视频讲解，暂不推高难综合题。</p>
+    <div class="remedial-pack">
+      <h3>基础笔记：静息电位先抓 K+</h3>
+      <p>静息电位的核心是：静息状态下细胞膜对 K+ 通透性最高，K+ 顺浓度差外流，使膜内相对变负。因此静息电位接近 K+ 平衡电位，但因 Na+ 仍有少量通透性，所以不完全相等。</p>
+      <table class="mini-table">
+        <thead>
+          <tr>
+            <th>场景</th>
+            <th>主导离子</th>
+            <th>结果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>静息电位</td>
+            <td>K+ 外流</td>
+            <td>膜内相对变负</td>
+          </tr>
+          <tr>
+            <td>动作电位快速去极化</td>
+            <td>Na+ 内流</td>
+            <td>膜内迅速变正</td>
+          </tr>
+          <tr>
+            <td>复极化</td>
+            <td>K+ 外流</td>
+            <td>膜电位回落</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="memory-card">
+        <strong>口诀</strong>
+        <span>静息看钾外流，去极看钠内流；外钾升高，静息绝对值变小。</span>
+      </div>
+      <div class="media-placeholder">
+        <span>视频讲解占位</span>
+        <p>这里可接入 2-3 分钟微课：静息电位、动作电位与外液 K+ 变化。</p>
+      </div>
+    </div>
+  `;
 }
 
 function selectOption(key) {
