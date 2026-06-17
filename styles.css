@@ -260,6 +260,47 @@ h1 {
   background: #fbfcfc;
 }
 
+.topic-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topic-card-head > strong {
+  color: var(--accent-dark);
+}
+
+.danger-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #efb4a1;
+  background: #fff7ed;
+  color: var(--danger);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.danger-button:hover {
+  border-color: var(--danger);
+}
+
+.empty-topics {
+  padding: 18px;
+  border: 1px dashed var(--line);
+  background: var(--surface-2);
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.empty-topics p {
+  margin: 6px 0 0;
+}
+
+.editor-actions {
+  margin-top: 0;
+}
+
 .topic-levels {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
