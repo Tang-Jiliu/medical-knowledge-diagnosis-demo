@@ -528,7 +528,10 @@ function renderChapterEditor() {
         <button class="secondary-button" id="backCourseBtn">返回首页</button>
       </div>
       <div class="topic-editor-grid">
-        ${chapter.topics.map((topic, index) => renderTopicEditor(chapter, topic, index)).join("")}
+        ${renderChapterTopics(chapter)}
+      </div>
+      <div class="actions editor-actions">
+        <button class="secondary-button" id="restoreTopicsBtn" type="button">恢复本章默认考点</button>
       </div>
       ${chapter.id === "chapter-3" ? renderChapterThreeEntry() : renderEmptyChapterNotice()}
     </article>
@@ -537,6 +540,8 @@ function renderChapterEditor() {
     state.mode = "intro";
     render();
   });
+  document.querySelector("#restoreTopicsBtn").addEventListener("click", () => restoreChapterTopics(chapter.id));
+  document.querySelectorAll("[data-delete-topic]").forEach(btn => btn.addEventListener("click", () => deleteTopic(btn.dataset.deleteTopic)));
   bindDraftEditors();
   document.querySelectorAll("[data-preview-image]").forEach(btn => btn.addEventListener("click", () => previewImage(btn.dataset.previewImage)));
   document.querySelectorAll("[data-local-image]").forEach(input => input.addEventListener("change", () => previewLocalImage(input)));
@@ -544,10 +549,30 @@ function renderChapterEditor() {
   document.querySelectorAll("[data-start-section]").forEach(btn => btn.addEventListener("click", () => startSection(Number(btn.dataset.startSection))));
 }
 
+function renderChapterTopics(chapter) {
+  const deleted = getDeletedTopics(chapter.id);
+  const visibleTopics = chapter.topics
+    .map((topic, index) => ({ topic, index }))
+    .filter(item => !deleted.includes(item.index));
+  if (!visibleTopics.length) {
+    return `
+      <section class="empty-topics">
+        <strong>本章暂无考点框</strong>
+        <p>可以点击下方“恢复本章默认考点”把模板考点重新加回来。</p>
+      </section>
+    `;
+  }
+  return visibleTopics.map(({ topic, index }) => renderTopicEditor(chapter, topic, index)).join("");
+}
+
 function renderTopicEditor(chapter, topic, index) {
   const key = `${chapter.id}-${index + 1}`;
   return `
     <section class="topic-editor-card">
+      <div class="topic-card-head">
+        <strong>考点 ${index + 1}</strong>
+        <button class="danger-button" data-delete-topic="${key}" type="button">删除考点</button>
+      </div>
       <div class="topic-levels">
         <label>一级考点<input data-draft="${key}-level1" value="${escapeAttr(getDraft(`${key}-level1`, topic.level1))}" aria-label="一级考点"></label>
         <label>二级考点<input data-draft="${key}-level2" value="${escapeAttr(getDraft(`${key}-level2`, topic.level2))}" aria-label="二级考点"></label>
@@ -576,6 +601,30 @@ function renderTopicEditor(chapter, topic, index) {
       </div>
     </section>
   `;
+}
+
+function getDeletedTopics(chapterId) {
+  try {
+    return JSON.parse(localStorage.getItem(`deleted-topics:${chapterId}`) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function deleteTopic(topicKey) {
+  const divider = topicKey.lastIndexOf("-");
+  const chapterId = topicKey.slice(0, divider);
+  const topicNumber = topicKey.slice(divider + 1);
+  const index = Number(topicNumber) - 1;
+  const deleted = new Set(getDeletedTopics(chapterId));
+  deleted.add(index);
+  localStorage.setItem(`deleted-topics:${chapterId}`, JSON.stringify([...deleted]));
+  render();
+}
+
+function restoreChapterTopics(chapterId) {
+  localStorage.removeItem(`deleted-topics:${chapterId}`);
+  render();
 }
 
 function getDraft(key, fallback) {
