@@ -36,8 +36,12 @@
       </section>
 
       <aside class="inspector">
-        <section class="inspector-section">
-          <h2>学习流程</h2>
+        <section class="inspector-section" data-collapsible-section>
+          <button class="inspector-toggle" type="button" aria-expanded="true">
+            <span>学习流程</span>
+            <span class="toggle-mark">⌄</span>
+          </button>
+          <div class="inspector-content">
           <div class="flowchart">
             <div class="flow-node">章节笔记</div>
             <div class="flow-arrow">学完 ↓</div>
@@ -49,29 +53,50 @@
             <div class="flow-arrow">三部分完成 ↓</div>
             <div class="flow-node hard">混合总结题</div>
           </div>
-        </section>
-
-        <section class="inspector-section">
-          <h2>本节结构</h2>
-          <ol class="flow-list" id="sectionList"></ol>
-        </section>
-
-        <section class="inspector-section">
-          <h2>学生画像</h2>
-          <div class="tag-grid" id="tagGrid"><span>未测</span></div>
-        </section>
-
-        <section class="inspector-section">
-          <h2>错题笔记</h2>
-          <div class="note-log" id="wrongNoteLog">
-            <p>错题加入笔记后会出现在这里，学生可在笔记页继续编辑。</p>
           </div>
         </section>
 
-        <section class="inspector-section">
-          <h2>复盘</h2>
+        <section class="inspector-section" data-collapsible-section>
+          <button class="inspector-toggle" type="button" aria-expanded="true">
+            <span>本节结构</span>
+            <span class="toggle-mark">⌄</span>
+          </button>
+          <div class="inspector-content">
+          <ol class="flow-list" id="sectionList"></ol>
+          </div>
+        </section>
+
+        <section class="inspector-section" data-collapsible-section>
+          <button class="inspector-toggle" type="button" aria-expanded="true">
+            <span>学生画像</span>
+            <span class="toggle-mark">⌄</span>
+          </button>
+          <div class="inspector-content">
+          <div class="tag-grid" id="tagGrid"><span>未测</span></div>
+          </div>
+        </section>
+
+        <section class="inspector-section" data-collapsible-section>
+          <button class="inspector-toggle" type="button" aria-expanded="true">
+            <span>错题笔记</span>
+            <span class="toggle-mark">⌄</span>
+          </button>
+          <div class="inspector-content">
+          <div class="note-log" id="wrongNoteLog">
+            <p>错题加入笔记后会出现在这里，学生可在笔记页继续编辑。</p>
+          </div>
+          </div>
+        </section>
+
+        <section class="inspector-section" data-collapsible-section>
+          <button class="inspector-toggle" type="button" aria-expanded="true">
+            <span>复盘</span>
+            <span class="toggle-mark">⌄</span>
+          </button>
+          <div class="inspector-content">
           <div class="review-log" id="reviewLog">
             <p>完成测试后，这里会记录每一步诊断。</p>
+          </div>
           </div>
         </section>
       </aside>
