@@ -464,7 +464,7 @@ function renderSidebars() {
   els.sectionList.innerHTML = state.mode === "intro" || state.mode === "chapterEditor"
     ? courseChapters.map((chapter, i) => {
       const cls = i === state.chapterIndex ? "active" : "";
-      return `<li class="${cls}">${chapter.title}<br><small>${chapter.status}</small></li>`;
+      return `<li class="${cls}">${chapter.title}</li>`;
     }).join("")
     : sections.map((s, i) => {
       const cls = state.completed.has(s.id) ? "done" : i === state.sectionIndex ? "active" : "";
@@ -493,15 +493,12 @@ function renderIntro() {
     <div class="note-document">
       <section class="note-section course-hero">
         <p class="eyebrow">306 考研医学 · 生理学内容搭建台</p>
-        <h2>前三章考点编辑总览</h2>
-        <p>先按一级、二级、三级、四级考点搭结构；每个考点下预留笔记、图片和题目配置空位。第三章保留现有闭环，作为可运行样板。</p>
+        <h2>生理学</h2>
       </section>
       <div class="chapter-grid">
         ${courseChapters.map((chapter, i) => `
           <button class="chapter-card" data-chapter="${i}">
-            <span>${chapter.status}</span>
             <strong>${chapter.title}</strong>
-            <p>${chapter.description}</p>
           </button>
         `).join("")}
       </div>
