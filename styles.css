@@ -818,9 +818,55 @@ h1 {
   overflow: auto;
 }
 
-.inspector-section h2 {
-  margin-bottom: 10px;
-  font-size: 16px;
+.inspector-section {
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.inspector-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 800;
+  text-align: left;
+}
+
+.inspector-toggle:hover {
+  color: var(--accent-dark);
+}
+
+.toggle-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--accent-dark);
+  transition: transform 0.18s ease;
+}
+
+.inspector-content {
+  padding: 12px;
+}
+
+.inspector-section.is-collapsed .inspector-content {
+  display: none;
+}
+
+.inspector-section.is-collapsed .inspector-toggle {
+  border-bottom: 0;
+}
+
+.inspector-section.is-collapsed .toggle-mark {
+  transform: rotate(-90deg);
 }
 
 .flow-list {
