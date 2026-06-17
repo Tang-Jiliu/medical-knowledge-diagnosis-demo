@@ -213,8 +213,8 @@ h1 {
 
 .chapter-card {
   display: grid;
-  gap: 10px;
-  min-height: 180px;
+  align-items: center;
+  min-height: 92px;
   padding: 16px;
   border: 1px solid var(--line);
   background: var(--surface);
@@ -228,23 +228,8 @@ h1 {
   background: #f8fcfb;
 }
 
-.chapter-card span {
-  width: fit-content;
-  padding: 4px 8px;
-  background: var(--surface-2);
-  color: var(--accent-dark);
-  font-size: 12px;
-  font-weight: 800;
-}
-
 .chapter-card strong {
   font-size: 19px;
-}
-
-.chapter-card p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.65;
 }
 
 .topic-editor-grid {
