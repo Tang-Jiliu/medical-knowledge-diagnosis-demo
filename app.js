@@ -531,6 +531,7 @@ function renderChapterEditor() {
         ${renderChapterTopics(chapter)}
       </div>
       <div class="actions editor-actions">
+        <button class="primary-button" id="addTopicBtn" type="button">新增考点</button>
         <button class="secondary-button" id="restoreTopicsBtn" type="button">恢复本章默认考点</button>
       </div>
       ${chapter.id === "chapter-3" ? renderChapterThreeEntry() : renderEmptyChapterNotice()}
@@ -541,6 +542,7 @@ function renderChapterEditor() {
     render();
   });
   document.querySelector("#restoreTopicsBtn").addEventListener("click", () => restoreChapterTopics(chapter.id));
+  document.querySelector("#addTopicBtn").addEventListener("click", () => addTopic(chapter.id));
   document.querySelectorAll("[data-delete-topic]").forEach(btn => btn.addEventListener("click", () => deleteTopic(btn.dataset.deleteTopic)));
   bindDraftEditors();
   document.querySelectorAll("[data-preview-image]").forEach(btn => btn.addEventListener("click", () => previewImage(btn.dataset.previewImage)));
@@ -551,27 +553,40 @@ function renderChapterEditor() {
 
 function renderChapterTopics(chapter) {
   const deleted = getDeletedTopics(chapter.id);
-  const visibleTopics = chapter.topics
-    .map((topic, index) => ({ topic, index }))
-    .filter(item => !deleted.includes(item.index));
+  const defaultTopics = chapter.topics
+    .map((topic, index) => ({
+      topic,
+      key: `${chapter.id}-${index + 1}`,
+      label: `考点 ${index + 1}`,
+      deletePayload: `default|${chapter.id}|${index}`
+    }))
+    .filter(item => !deleted.defaults.includes(Number(item.deletePayload.split("|")[2])));
+  const customTopics = getCustomTopics(chapter.id)
+    .filter(topic => !deleted.custom.includes(topic.id))
+    .map((topic, index) => ({
+      topic,
+      key: topic.id,
+      label: `新增考点 ${index + 1}`,
+      deletePayload: `custom|${chapter.id}|${topic.id}`
+    }));
+  const visibleTopics = [...defaultTopics, ...customTopics];
   if (!visibleTopics.length) {
     return `
       <section class="empty-topics">
         <strong>本章暂无考点框</strong>
-        <p>可以点击下方“恢复本章默认考点”把模板考点重新加回来。</p>
+        <p>可以点击下方“新增考点”继续搭建，也可以用“恢复本章默认考点”把模板考点重新加回来。</p>
       </section>
     `;
   }
-  return visibleTopics.map(({ topic, index }) => renderTopicEditor(chapter, topic, index)).join("");
+  return visibleTopics.map(item => renderTopicEditor(chapter, item.topic, item.key, item.label, item.deletePayload)).join("");
 }
 
-function renderTopicEditor(chapter, topic, index) {
-  const key = `${chapter.id}-${index + 1}`;
+function renderTopicEditor(chapter, topic, key, label, deletePayload) {
   return `
     <section class="topic-editor-card">
       <div class="topic-card-head">
-        <strong>考点 ${index + 1}</strong>
-        <button class="danger-button" data-delete-topic="${key}" type="button">删除考点</button>
+        <strong>${label}</strong>
+        <button class="danger-button" data-delete-topic="${deletePayload}" type="button">删除考点</button>
       </div>
       <div class="topic-levels">
         <label>一级考点<input data-draft="${key}-level1" value="${escapeAttr(getDraft(`${key}-level1`, topic.level1))}" aria-label="一级考点"></label>
@@ -605,25 +620,51 @@ function renderTopicEditor(chapter, topic, index) {
 
 function getDeletedTopics(chapterId) {
   try {
-    return JSON.parse(localStorage.getItem(`deleted-topics:${chapterId}`) || "[]");
+    const saved = JSON.parse(localStorage.getItem(`deleted-topics:${chapterId}`) || "{}");
+    if (Array.isArray(saved)) return { defaults: saved, custom: [] };
+    return { defaults: saved.defaults || [], custom: saved.custom || [] };
+  } catch {
+    return { defaults: [], custom: [] };
+  }
+}
+
+function getCustomTopics(chapterId) {
+  try {
+    return JSON.parse(localStorage.getItem(`custom-topics:${chapterId}`) || "[]");
   } catch {
     return [];
   }
 }
 
-function deleteTopic(topicKey) {
-  const divider = topicKey.lastIndexOf("-");
-  const chapterId = topicKey.slice(0, divider);
-  const topicNumber = topicKey.slice(divider + 1);
-  const index = Number(topicNumber) - 1;
-  const deleted = new Set(getDeletedTopics(chapterId));
-  deleted.add(index);
-  localStorage.setItem(`deleted-topics:${chapterId}`, JSON.stringify([...deleted]));
+function addTopic(chapterId) {
+  const customTopics = getCustomTopics(chapterId);
+  const id = `${chapterId}-custom-${Date.now()}`;
+  customTopics.push({
+    id,
+    level1: "新增一级考点",
+    level2: "新增二级考点",
+    level3: "新增三级考点",
+    level4: "新增四级考点"
+  });
+  localStorage.setItem(`custom-topics:${chapterId}`, JSON.stringify(customTopics));
+  render();
+}
+
+function deleteTopic(payload) {
+  const [type, chapterId, value] = payload.split("|");
+  const deleted = getDeletedTopics(chapterId);
+  if (type === "custom") {
+    deleted.custom = [...new Set([...deleted.custom, value])];
+  } else {
+    deleted.defaults = [...new Set([...deleted.defaults, Number(value)])];
+  }
+  localStorage.setItem(`deleted-topics:${chapterId}`, JSON.stringify(deleted));
   render();
 }
 
 function restoreChapterTopics(chapterId) {
   localStorage.removeItem(`deleted-topics:${chapterId}`);
+  localStorage.removeItem(`custom-topics:${chapterId}`);
   render();
 }
 
