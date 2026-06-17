@@ -331,8 +331,90 @@ const legacyRestingQuestions = [
 sections[0].questions.push(legacyRestingQuestions[1]);
 finalQuestions.push(legacyRestingQuestions[0], legacyRestingQuestions[2]);
 
+const courseChapters = [
+  {
+    id: "chapter-1",
+    title: "第一章 绪论",
+    status: "可编辑模板",
+    description: "先搭建一级到四级考点结构，后续同事可补充笔记、图片和题目。",
+    topics: [
+      {
+        level1: "生理学总论",
+        level2: "生命活动的基本特征",
+        level3: "新陈代谢、兴奋性、适应性、生殖",
+        level4: "概念辨析与选择题常见陷阱"
+      },
+      {
+        level1: "机体功能调节",
+        level2: "神经调节、体液调节、自身调节",
+        level3: "反馈控制",
+        level4: "负反馈、正反馈、前馈的判断"
+      },
+      {
+        level1: "内环境与稳态",
+        level2: "内环境概念",
+        level3: "稳态维持机制",
+        level4: "稳态破坏与调节环节定位"
+      }
+    ]
+  },
+  {
+    id: "chapter-2",
+    title: "第二章 细胞的基本功能",
+    status: "可编辑模板",
+    description: "为跨膜转运、受体信号、肌肉收缩等内容预留编辑和命题空间。",
+    topics: [
+      {
+        level1: "细胞膜物质转运",
+        level2: "单纯扩散、易化扩散、主动转运",
+        level3: "通道、载体和泵",
+        level4: "顺/逆浓度梯度与耗能判断"
+      },
+      {
+        level1: "细胞信号转导",
+        level2: "受体与第二信使",
+        level3: "G 蛋白、酶耦联受体、离子通道受体",
+        level4: "信号放大与效应器定位"
+      },
+      {
+        level1: "肌细胞收缩",
+        level2: "兴奋-收缩耦联",
+        level3: "钙离子、肌丝滑行、横桥循环",
+        level4: "骨骼肌与平滑肌差异"
+      }
+    ]
+  },
+  {
+    id: "chapter-3",
+    title: "第三章 细胞的电活动",
+    status: "已接入闭环样板",
+    description: "保留当前已做好的视频、笔记、巩固题、错因追问、章节总复习流程。",
+    topics: [
+      {
+        level1: "细胞的电活动",
+        level2: "静息电位",
+        level3: "形成机制与影响因素",
+        level4: "K+ 平衡电位、Na+-K+ 泵、外液 K+ 改变"
+      },
+      {
+        level1: "细胞的电活动",
+        level2: "动作电位",
+        level3: "离子机制与传播",
+        level4: "Na+ 内流、K+ 外流、阈电位、跳跃式传导"
+      },
+      {
+        level1: "细胞的电活动",
+        level2: "局部电位和电紧张电位",
+        level3: "等级性、衰减性、可叠加",
+        level4: "与动作电位的对比"
+      }
+    ]
+  }
+];
+
 const state = {
   mode: "intro",
+  chapterIndex: 0,
   sectionIndex: 0,
   questionIndex: 0,
   finalIndex: 0,
@@ -361,6 +443,7 @@ function render() {
   renderStatus();
   renderSidebars();
   if (state.mode === "intro") return renderIntro();
+  if (state.mode === "chapterEditor") return renderChapterEditor();
   if (state.mode === "learn") return renderLearn();
   if (state.mode === "test") return renderQuestion(false);
   if (state.mode === "final") return renderQuestion(true);
@@ -369,17 +452,24 @@ function render() {
 }
 
 function renderStatus() {
-  const labels = { intro: "总览", learn: "笔记学习", test: "巩固测试", reviewReady: "章节总复习", final: "混合总结题", done: "完成" };
+  const labels = { intro: "课程编辑总览", chapterEditor: "考点编辑", learn: "笔记学习", test: "巩固测试", reviewReady: "章节总复习", final: "混合总结题", done: "完成" };
   els.stage.textContent = labels[state.mode] || "学习";
-  els.progress.textContent = `${state.completed.size}/${sections.length}`;
+  els.progress.textContent = state.mode === "intro" || state.mode === "chapterEditor"
+    ? `${courseChapters.length} 章模板`
+    : `${state.completed.size}/${sections.length}`;
   els.profile.textContent = state.profile;
 }
 
 function renderSidebars() {
-  els.sectionList.innerHTML = sections.map((s, i) => {
-    const cls = state.completed.has(s.id) ? "done" : i === state.sectionIndex ? "active" : "";
-    return `<li class="${cls}">${s.title}</li>`;
-  }).join("");
+  els.sectionList.innerHTML = state.mode === "intro" || state.mode === "chapterEditor"
+    ? courseChapters.map((chapter, i) => {
+      const cls = i === state.chapterIndex ? "active" : "";
+      return `<li class="${cls}">${chapter.title}<br><small>${chapter.status}</small></li>`;
+    }).join("")
+    : sections.map((s, i) => {
+      const cls = state.completed.has(s.id) ? "done" : i === state.sectionIndex ? "active" : "";
+      return `<li class="${cls}">${s.title}</li>`;
+    }).join("");
   els.tagGrid.innerHTML = [...state.tags].map(t => `<span>${t}</span>`).join("");
   els.wrongNoteLog.innerHTML = state.wrongNotes.length
     ? state.wrongNotes.map(n => `
@@ -401,15 +491,139 @@ function renderSidebars() {
 function renderIntro() {
   els.main.innerHTML = `
     <div class="note-document">
-      ${chapterIntro}
-      <div class="section-grid">
-        ${sections.map((s, i) => `<button class="section-card" data-open="${i}"><strong>${s.title}</strong><span>笔记 + 2 题巩固</span></button>`).join("")}
+      <section class="note-section course-hero">
+        <p class="eyebrow">306 考研医学 · 生理学内容搭建台</p>
+        <h2>前三章考点编辑总览</h2>
+        <p>先按一级、二级、三级、四级考点搭结构；每个考点下预留笔记、图片和题目配置空位。第三章保留现有闭环，作为可运行样板。</p>
+      </section>
+      <div class="chapter-grid">
+        ${courseChapters.map((chapter, i) => `
+          <button class="chapter-card" data-chapter="${i}">
+            <span>${chapter.status}</span>
+            <strong>${chapter.title}</strong>
+            <p>${chapter.description}</p>
+          </button>
+        `).join("")}
       </div>
-      <div class="actions"><button class="primary-button" id="startBtn">开始学习静息电位</button></div>
     </div>
   `;
-  document.querySelector("#startBtn").addEventListener("click", () => startSection(0));
-  document.querySelectorAll("[data-open]").forEach(btn => btn.addEventListener("click", () => startSection(Number(btn.dataset.open))));
+  document.querySelectorAll("[data-chapter]").forEach(btn => btn.addEventListener("click", () => {
+    state.chapterIndex = Number(btn.dataset.chapter);
+    state.mode = "chapterEditor";
+    state.profile = "内容编辑中";
+    render();
+  }));
+}
+
+function renderChapterEditor() {
+  const chapter = courseChapters[state.chapterIndex];
+  els.main.innerHTML = `
+    <article class="note-document">
+      <div class="question-head">
+        <div>
+          <p class="eyebrow">可编辑考点结构</p>
+          <h2 contenteditable="true">${chapter.title}</h2>
+          <p contenteditable="true">${chapter.description}</p>
+        </div>
+        <button class="secondary-button" id="backCourseBtn">返回首页</button>
+      </div>
+      <div class="topic-editor-grid">
+        ${chapter.topics.map((topic, index) => renderTopicEditor(chapter, topic, index)).join("")}
+      </div>
+      ${chapter.id === "chapter-3" ? renderChapterThreeEntry() : renderEmptyChapterNotice()}
+    </article>
+  `;
+  document.querySelector("#backCourseBtn").addEventListener("click", () => {
+    state.mode = "intro";
+    render();
+  });
+  bindDraftEditors();
+  document.querySelectorAll("[data-preview-image]").forEach(btn => btn.addEventListener("click", () => previewImage(btn.dataset.previewImage)));
+  document.querySelectorAll("[data-start-section]").forEach(btn => btn.addEventListener("click", () => startSection(Number(btn.dataset.startSection))));
+}
+
+function renderTopicEditor(chapter, topic, index) {
+  const key = `${chapter.id}-${index + 1}`;
+  return `
+    <section class="topic-editor-card">
+      <div class="topic-levels">
+        <label>一级考点<input data-draft="${key}-level1" value="${escapeAttr(getDraft(`${key}-level1`, topic.level1))}" aria-label="一级考点"></label>
+        <label>二级考点<input data-draft="${key}-level2" value="${escapeAttr(getDraft(`${key}-level2`, topic.level2))}" aria-label="二级考点"></label>
+        <label>三级考点<input data-draft="${key}-level3" value="${escapeAttr(getDraft(`${key}-level3`, topic.level3))}" aria-label="三级考点"></label>
+        <label>四级考点<input data-draft="${key}-level4" value="${escapeAttr(getDraft(`${key}-level4`, topic.level4))}" aria-label="四级考点"></label>
+      </div>
+      <div class="editor-slot">
+        <strong>流程笔记空位</strong>
+        <div class="editable-slot" data-draft="${key}-note" contenteditable="true">${getDraft(`${key}-note`, "在这里插入该考点的文字笔记、表格、口诀或讲解提示。")}</div>
+      </div>
+      <div class="editor-slot">
+        <strong>图片/表格/视频素材空位</strong>
+        <div class="media-slot">
+          <input id="image-${key}" data-draft="${key}-image" type="url" value="${escapeAttr(getDraft(`${key}-image`, ""))}" placeholder="粘贴图片 URL，或后续替换为上传控件">
+          <button class="secondary-button" data-preview-image="image-${key}" type="button">预览图片</button>
+        </div>
+        <div class="image-preview" id="preview-image-${key}">素材预览区</div>
+      </div>
+      <div class="editor-slot">
+        <strong>题目设置空位</strong>
+        <textarea data-draft="${key}-question" placeholder="题干：&#10;A. &#10;B. &#10;C. &#10;D. &#10;E. &#10;答案：&#10;解析：&#10;错因追问：">${getDraft(`${key}-question`, "")}</textarea>
+      </div>
+    </section>
+  `;
+}
+
+function getDraft(key, fallback) {
+  return localStorage.getItem(`draft:${key}`) ?? fallback;
+}
+
+function bindDraftEditors() {
+  document.querySelectorAll("[data-draft]").forEach(el => {
+    const save = () => {
+      const value = el.isContentEditable ? el.innerHTML : el.value;
+      localStorage.setItem(`draft:${el.dataset.draft}`, value);
+    };
+    el.addEventListener("input", save);
+    el.addEventListener("blur", save);
+  });
+}
+
+function escapeAttr(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function renderChapterThreeEntry() {
+  return `
+    <section class="note-section existing-demo">
+      <div>
+        <p class="eyebrow">已保留的闭环样板</p>
+        <h2>第三章现有学习流程</h2>
+        <p>下面入口仍然进入原来的“视频窗口 → 笔记 → 巩固题 → 错因二选一追问 → 回笔记/下一题 → 章节总复习”闭环。</p>
+      </div>
+      <div class="section-grid">
+        ${sections.map((s, i) => `<button class="section-card" data-start-section="${i}"><strong>${s.title}</strong><span>进入现有闭环</span></button>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderEmptyChapterNotice() {
+  return `
+    <section class="note-section empty-flow-note">
+      <h2>流程预留</h2>
+      <p>本章暂不生成正式知识点和题目，先保留编辑槽位。等同事补齐内容后，可以把这里接入与第三章相同的诊断闭环。</p>
+    </section>
+  `;
+}
+
+function previewImage(inputId) {
+  const input = document.querySelector(`#${inputId}`);
+  const preview = document.querySelector(`#preview-${inputId}`);
+  const url = input.value.trim();
+  preview.innerHTML = url ? `<img src="${url}" alt="素材预览">` : "素材预览区";
 }
 
 function renderLearn() {
@@ -796,6 +1010,7 @@ function bindReciteButtons() {
 
 function restart() {
   state.mode = "intro";
+  state.chapterIndex = 0;
   state.sectionIndex = 0;
   state.questionIndex = 0;
   state.finalIndex = 0;
@@ -805,6 +1020,7 @@ function restart() {
   state.wrongNotes = [];
   state.profile = "未测";
   state.highlightAnchor = "";
+  state.pendingReturn = null;
   render();
 }
 
