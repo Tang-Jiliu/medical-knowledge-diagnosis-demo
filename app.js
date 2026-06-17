@@ -1024,5 +1024,22 @@ function restart() {
   render();
 }
 
+function bindInspectorToggles() {
+  document.querySelectorAll("[data-collapsible-section]").forEach((section, index) => {
+    const button = section.querySelector(".inspector-toggle");
+    const storageKey = `inspector-collapsed-${index}`;
+    const collapsed = localStorage.getItem(storageKey) === "true";
+    section.classList.toggle("is-collapsed", collapsed);
+    button?.setAttribute("aria-expanded", String(!collapsed));
+    button?.addEventListener("click", () => {
+      const nextCollapsed = !section.classList.contains("is-collapsed");
+      section.classList.toggle("is-collapsed", nextCollapsed);
+      button.setAttribute("aria-expanded", String(!nextCollapsed));
+      localStorage.setItem(storageKey, String(nextCollapsed));
+    });
+  });
+}
+
 els.restartBtn.addEventListener("click", restart);
+bindInspectorToggles();
 render();
