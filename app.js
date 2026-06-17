@@ -539,6 +539,8 @@ function renderChapterEditor() {
   });
   bindDraftEditors();
   document.querySelectorAll("[data-preview-image]").forEach(btn => btn.addEventListener("click", () => previewImage(btn.dataset.previewImage)));
+  document.querySelectorAll("[data-local-image]").forEach(input => input.addEventListener("change", () => previewLocalImage(input)));
+  restoreImagePreviews();
   document.querySelectorAll("[data-start-section]").forEach(btn => btn.addEventListener("click", () => startSection(Number(btn.dataset.startSection))));
 }
 
@@ -561,6 +563,10 @@ function renderTopicEditor(chapter, topic, index) {
         <div class="media-slot">
           <input id="image-${key}" data-draft="${key}-image" type="url" value="${escapeAttr(getDraft(`${key}-image`, ""))}" placeholder="粘贴图片 URL，或后续替换为上传控件">
           <button class="secondary-button" data-preview-image="image-${key}" type="button">预览图片</button>
+          <label class="file-picker">
+            <span>读取本地图片</span>
+            <input data-local-image="${key}" type="file" accept="image/*">
+          </label>
         </div>
         <div class="image-preview" id="preview-image-${key}">素材预览区</div>
       </div>
@@ -623,7 +629,36 @@ function previewImage(inputId) {
   const input = document.querySelector(`#${inputId}`);
   const preview = document.querySelector(`#preview-${inputId}`);
   const url = input.value.trim();
-  preview.innerHTML = url ? `<img src="${url}" alt="素材预览">` : "素材预览区";
+  preview.innerHTML = url ? `<img src="${escapeAttr(url)}" alt="素材预览">` : "素材预览区";
+  if (url) localStorage.setItem(`draft:${inputId.replace("image-", "")}-image-preview`, url);
+}
+
+function previewLocalImage(input) {
+  const file = input.files?.[0];
+  if (!file) return;
+  const key = input.dataset.localImage;
+  const preview = document.querySelector(`#preview-image-${key}`);
+  if (!file.type.startsWith("image/")) {
+    preview.textContent = "请选择图片文件";
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    const dataUrl = reader.result;
+    preview.innerHTML = `<img src="${dataUrl}" alt="${escapeAttr(file.name)}">`;
+    localStorage.setItem(`draft:${key}-image-preview`, dataUrl);
+    localStorage.setItem(`draft:${key}-image-name`, file.name);
+  });
+  reader.readAsDataURL(file);
+}
+
+function restoreImagePreviews() {
+  document.querySelectorAll(".image-preview").forEach(preview => {
+    const key = preview.id.replace("preview-image-", "");
+    const saved = localStorage.getItem(`draft:${key}-image-preview`);
+    const name = localStorage.getItem(`draft:${key}-image-name`) || "素材预览";
+    if (saved) preview.innerHTML = `<img src="${saved}" alt="${escapeAttr(name)}">`;
+  });
 }
 
 function renderLearn() {
